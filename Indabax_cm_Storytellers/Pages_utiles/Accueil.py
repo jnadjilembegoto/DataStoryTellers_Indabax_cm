@@ -11,11 +11,11 @@ def accueil_load():
         st.title('🏠 Accueil')
     st.sidebar.markdown('---')
     st.sidebar.markdown("## Base de données utilisée")
-    st.sidebar.markdown("""[*Données appurées*](https://github.com/jnadjilembegoto/Employment_Data_Storytellers)
+    st.sidebar.markdown("""[*Données appurées*](https://github.com/jnadjilembegoto/DataStoryTellers_Indabax_cm)
                         """)
     st.sidebar.markdown('---')
     st.sidebar.markdown("## Scripts de l'application")
-    st.sidebar.markdown("""[*Code de l'application*](https://github.com/jnadjilembegoto/Employment_Data_Storytellers)
+    st.sidebar.markdown("""[*Code de l'application*](https://github.com/jnadjilembegoto/DataStoryTellers_Indabax_cm)
                         """)
     # En-tête de la page
     #st.title("🩸Save a Life, Donate Blood")
