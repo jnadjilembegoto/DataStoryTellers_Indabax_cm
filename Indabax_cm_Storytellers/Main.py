@@ -31,11 +31,11 @@ st.set_page_config(
 
 # Barre latérale pour la navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("Aller à :", ["Accueil","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","ACP","About Us"])
+page = st.sidebar.selectbox("Aller à :", ["Accueil","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","About Us"])
 
 if page == "About Us":
     about_us_page()
-elif page=="ACP":
+elif page=="Analyse de sentiments":
     acp_analyse()
 elif page=="Efficacité des campagnes":
     page_efficacity()
