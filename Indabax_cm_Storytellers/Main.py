@@ -8,6 +8,7 @@ from Pages_utiles.Efficacity_des_campagnes import page_efficacity
 from Pages_utiles.Fidelisation_donneurs import page_fidelisation 
 from Pages_utiles.Sante_aligibility import page_santeElig
 from Pages_utiles.ACP import acp_analyse
+from Pages_utiles.ML import ml_analyse
 from Pages_utiles.Profil_donneurs import page_profil_load
 
 
@@ -31,7 +32,7 @@ st.set_page_config(
 
 # Barre latérale pour la navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("Aller à :", ["Accueil","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","About Us"])
+page = st.sidebar.selectbox("Aller à :", ["Accueil","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","Modèle de prédiction","About Us"])
 
 if page == "About Us":
     about_us_page()
@@ -45,6 +46,8 @@ elif page=="Condition de santé et éligibilité":
     page_santeElig()
 elif page=="Profil des donneurs":
     page_profil_load()
+elif page=="Modèle de prédiction":
+    ml_analyse()
 else:
     accueil_load()
 
