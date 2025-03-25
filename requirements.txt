@@ -48,3 +48,4 @@ watchdog==4.0.1
 plotly.express
 openpyxl==3.1.2
 factor_analyzer
+wordcloud
