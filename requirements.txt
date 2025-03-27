@@ -51,3 +51,4 @@ factor_analyzer
 wordcloud
 folium
 streamlit-folium
+kmodes
