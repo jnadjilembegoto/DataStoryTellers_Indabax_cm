@@ -52,5 +52,5 @@ wordcloud
 folium
 streamlit-folium
 kmodes
-openai
-difflib
+openai==0.27.4
+difflib==0.3.4
