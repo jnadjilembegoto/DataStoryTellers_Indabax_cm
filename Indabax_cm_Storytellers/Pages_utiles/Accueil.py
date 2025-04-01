@@ -11,19 +11,23 @@ def accueil_load():
         st.title('🏠 Accueil')
     st.sidebar.markdown('---')
     st.sidebar.markdown("## Base de données utilisée")
-    st.sidebar.markdown("""[*Données appurées*](https://github.com/jnadjilembegoto/DataStoryTellers_Indabax_cm)
+    st.sidebar.markdown("""[*Données appurées*](https://github.com/jnadjilembegoto/Employment_Data_Storytellers)
                         """)
     st.sidebar.markdown('---')
     st.sidebar.markdown("## Scripts de l'application")
-    st.sidebar.markdown("""[*Code de l'application*](https://github.com/jnadjilembegoto/DataStoryTellers_Indabax_cm)
+    st.sidebar.markdown("""[*Code de l'application*](https://github.com/jnadjilembegoto/Employment_Data_Storytellers)
                         """)
     # En-tête de la page
     #st.title("🩸Save a Life, Donate Blood")
     # Centrer le titre en utilisant Markdown et HTML  
     st.markdown(  
-        "<h1 style='text-align: center;'>🩸 Save a Life, Donate Blood</h1>",  
-        unsafe_allow_html=True  
-    ) 
+    """
+    <div style="border: 4px solid black; padding: 10px; width: fit-content; margin: auto;">
+        <h1 style='text-align: center;'>🩸 Save a Life, Donate Blood</h1>
+    </div>
+    """,  
+    unsafe_allow_html=True  
+)
     st.image(logo, use_column_width=True)
 
     st.markdown("""
@@ -39,8 +43,9 @@ def accueil_load():
     - 🔬 **Profilage des donneurs** : Clustering basé sur des données démographiques
     - 📊 **Efficacité des campagnes** : Analyse des tendances et facteurs influents
     - 🔄 **Fidélisation des donneurs** : Étude de la récurrence des dons
-    - 💬 **Analyse de sentiment** : Classification des retours des donneurs
-    - 🤖 **Modèle de prédiction** *(optionnel)* : Évaluation de l’éligibilité au don
+    - 🧠 **Analyse de sentiment** : Classification des retours des donneurs
+    - 🤖 **Modèle de prédiction** : Évaluation de l’éligibilité au don
+    - 🧑‍💻 **Chat Blood Assistant analyst** : Pour une compréhension approfondie des notions et termes d'usage
     - ℹ️ **About us** : Une présentation de tous les membres de la Data Storytellers Team
     """)
     st.markdown('---')
