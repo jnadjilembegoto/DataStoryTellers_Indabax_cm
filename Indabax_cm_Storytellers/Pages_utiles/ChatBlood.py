@@ -13,7 +13,7 @@ def chat_load():
 
     # Définir le modèle par défaut si ce n'est pas déjà fait
     if "openai_model" not in st.session_state:
-        st.session_state["openai_model"] = "gpt-4o-mini"
+        st.session_state["openai_model"] = "gpt-3.5-turbo"#"gpt-4o-mini"
 
     # Conserver les messages de chat dans l'état de session
     if "messages" not in st.session_state:
