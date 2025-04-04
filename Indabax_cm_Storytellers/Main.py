@@ -11,7 +11,7 @@ from Pages_utiles.ACP import acp_analyse
 from Pages_utiles.ML import ml_analyse
 from Pages_utiles.Profil_donneurs2 import page_profil_load
 from Pages_utiles.carto2 import carto_page_load
-from Pages_utiles.ChatBlood import chat_load
+#from Pages_utiles.ChatBlood import chat_load
 
 
 import openpyxl
@@ -34,11 +34,11 @@ st.set_page_config(
 
 # Barre latérale pour la navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("Aller à :", ["Accueil","Cartographie de la Répartition des Donneurs","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","Modèle de prédiction","Chat Blood","About Us"])
+page = st.sidebar.selectbox("Aller à :", ["Accueil","Cartographie de la Répartition des Donneurs","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","Modèle de prédiction","Blood","About Us"])
 
 if page == "About Us":
     about_us_page()
-elif page=="Chat Blood":
+elif page=="Blood":
     st.write("Bonjour")
     #chat_load()
 elif page=="Analyse de sentiments":
