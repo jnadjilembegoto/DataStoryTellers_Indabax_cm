@@ -11,7 +11,7 @@ from Pages_utiles.ACP import acp_analyse
 from Pages_utiles.ML import ml_analyse
 from Pages_utiles.Profil_donneurs2 import page_profil_load
 from Pages_utiles.carto2 import carto_page_load
-from Pages_utiles.ChatBlood import chat_load
+#from Pages_utiles.ChatBlood import chat_load
 
 
 import openpyxl
@@ -39,8 +39,8 @@ page = st.sidebar.selectbox("Aller à :", ["Accueil","Cartographie de la Répart
 if page == "About Us":
     about_us_page()
 elif page=="Blood":
-    #st.write("Bonjour")
-    chat_load()
+    st.write("Bonjour")
+    #chat_load()
 elif page=="Analyse de sentiments":
     acp_analyse()
 elif page=="Efficacité des campagnes":
