@@ -73,5 +73,5 @@ def accueil_load():
     # Footer
 
     st.markdown("---")
-    st.markdown("📌 **Projet réalisé Par la DATA STORY TELLER TEAM dans le cadre du Challenge de Visualisation des Données** | 🚀 Développé avec **Python & Streamlit**")
+    st.markdown("📌 **Projet réalisé Par la Data Storytellers Team dans le cadre du Challenge de Visualisation des Données** | 🚀 Développé avec **Python & Streamlit**")
 
