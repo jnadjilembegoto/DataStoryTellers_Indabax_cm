@@ -39,7 +39,8 @@ page = st.sidebar.selectbox("Aller à :", ["Accueil","Cartographie de la Répart
 if page == "About Us":
     about_us_page()
 elif page=="Chat Blood":
-    chat_load()
+    st.write("Bonjour")
+    #chat_load()
 elif page=="Analyse de sentiments":
     acp_analyse()
 elif page=="Efficacité des campagnes":
