@@ -11,11 +11,11 @@ def accueil_load():
         st.title('🏠 Accueil')
     st.sidebar.markdown('---')
     st.sidebar.markdown("## Base de données utilisée")
-    st.sidebar.markdown("""[*Données appurées*](https://github.com/jnadjilembegoto/Employment_Data_Storytellers)
+    st.sidebar.markdown("""[*Données appurées*](https://www.google.com/search?q=Afriland&oq=afr&gs_lcrp=EgZjaHJvbWUqDggAEEUYOxhDGIAEGIoFMg4IABBFGDsYQxiABBiKBTIGCAEQRRhAMgYIAhBFGD0yBggDEEUYPTIGCAQQRRg8MgYIBRBFGEEyBggGEEUYPDIGCAcQRRg80gEINDU5M2owajmoAgCwAgA&sourceid=chrome&ie=UTF-8)
                         """)
     st.sidebar.markdown('---')
     st.sidebar.markdown("## Scripts de l'application")
-    st.sidebar.markdown("""[*Code de l'application*](https://github.com/jnadjilembegoto/Employment_Data_Storytellers)
+    st.sidebar.markdown("""[*Code de l'application*](https://www.google.com/search?q=Afriland&oq=afr&gs_lcrp=EgZjaHJvbWUqDggAEEUYOxhDGIAEGIoFMg4IABBFGDsYQxiABBiKBTIGCAEQRRhAMgYIAhBFGD0yBggDEEUYPTIGCAQQRRg8MgYIBRBFGEEyBggGEEUYPDIGCAcQRRg80gEINDU5M2owajmoAgCwAgA&sourceid=chrome&ie=UTF-8)
                         """)
     # En-tête de la page
     #st.title("🩸Save a Life, Donate Blood")
