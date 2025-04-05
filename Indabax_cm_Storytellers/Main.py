@@ -16,6 +16,8 @@ from Pages_utiles.Fonctionnalities import fonctionnalities_load
 
 logo_path = main_dir("campagne_cameroun_dst.webp")
 logo = Image.open(logo_path)
+coeur_path=main_dir("sang_coeur.webp")
+coeur= Image.open(coeur_path)
 # Configuration de la page
 st.set_page_config(
         page_title="Tableau de Bord - Don de Sang",
@@ -36,13 +38,9 @@ if not st.session_state.auth_status:
     with st.sidebar:
         st.title('🏠 Accueil')
     st.sidebar.markdown('---')
-    st.sidebar.markdown("## Base de données utilisée")
-    st.sidebar.markdown("""[*Données appurées*](https://www.google.com/)
-                        """)
+    st.sidebar.image(coeur, use_column_width=True)
     st.sidebar.markdown('---')
-    st.sidebar.markdown("## Scripts de l'application")
-    st.sidebar.markdown("""[*Code de l'application*](https://www.google.com/)
-                        """)
+    
     # En-tête de la page
     #st.title("🩸Save a Life, Donate Blood")
     # Centrer le titre en utilisant Markdown et HTML  
@@ -51,8 +49,8 @@ if not st.session_state.auth_status:
         <style>
             .custom-box {
                 border: 3px solid #8B0000;  /* Rouge foncé */
-                padding: 15px;
-                width: fit-content;
+                padding: 5px;
+                width: 100%;
                 margin: auto;
                 border-radius: 12px;
                 box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
@@ -69,17 +67,19 @@ if not st.session_state.auth_status:
     """, unsafe_allow_html=True)
 
     # Création du bloc stylisé
+    
     st.markdown("""
         <div class="custom-box">
-            <h1 class="title-text">🩸Campagne de don de sang : Save a Life, Donate Blood</h1>
+            <h1 class="title-text">🩸Save a Life, Donate Blood</h1>
         </div>
     """, unsafe_allow_html=True)
-
+     
+    
     st.image(logo, use_column_width=True)
 
     st.markdown("""
     Bienvenue sur l'application interactive de suivi des campagnes de don de sang. 
-    Ce tableau de bord vous permet d'explorer et d'analyser les données des donneurs afin d'améliorer les futures campagnes.
+    Ce tableau de bord permet d'explorer et d'analyser les données des donneurs de sangafin d'améliorer les futures campagnes.
     """)
     st.markdown('---')
     # Présentation des fonctionnalités clés
