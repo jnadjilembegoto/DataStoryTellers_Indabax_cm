@@ -71,7 +71,7 @@ if not st.session_state.auth_status:
     # Création du bloc stylisé
     st.markdown("""
         <div class="custom-box">
-            <h1 class="title-text">🩸Campagne de don de sang : Save a Life, Donate Blood</h1>
+            <h1 class="title-text">🩸Campagne de don de sang : Save a Life, Donate Blood</h1><br><br>
         </div>
     """, unsafe_allow_html=True)
 
