@@ -2,11 +2,12 @@ import streamlit as st
 import joblib
 import numpy as np
 
-
+from Datas.data_link import data_dir
+path = data_dir('modele_eligibilite.joblib')
 
 def ml_analyse():
     # Charger le modèle
-    model = joblib.load('modele_eligibilite.joblib')
+    model = joblib.load('path')
     
     # Interface utilisateur avec Streamlit
     st.title("🩸 Prédiction d'Éligibilité au Don de Sang")
