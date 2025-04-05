@@ -19,7 +19,10 @@ def ml_analyse():
     
     donne_sang = st.checkbox("A déjà donné le sang ?")
     antibiotique = st.checkbox("Sous antibiothérapie ?")
-    hemoglobine_basse = st.checkbox("Hémoglobine basse ?")
+    if taux_hemoglobine<13:
+        hemoglobine_basse = 1
+    else:
+        hemoglobine_basse = 0
     dernier_don_3mois = st.checkbox("Dernier don dans les 3 mois ?")
     ist_recente = st.checkbox("IST récente ?")
     
