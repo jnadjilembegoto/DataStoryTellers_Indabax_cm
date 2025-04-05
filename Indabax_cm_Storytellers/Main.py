@@ -46,14 +46,35 @@ if not st.session_state.auth_status:
     # En-tête de la page
     #st.title("🩸Save a Life, Donate Blood")
     # Centrer le titre en utilisant Markdown et HTML  
-    st.markdown(  
-    """
-    <div style="border: 4px solid black; padding: 10px; width: fit-content; margin: auto;">
-        <h1 style='text-align: center;'>🩸 Save a Life, Donate Blood</h1>
-    </div>
-    """,  
-    unsafe_allow_html=True  
-)
+       # Appliquer le style CSS amélioré
+    st.markdown("""
+        <style>
+            .custom-box {
+                border: 3px solid #8B0000;  /* Rouge foncé */
+                padding: 15px;
+                width: fit-content;
+                margin: auto;
+                border-radius: 12px;
+                box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+                background-color: #fff5f5; /* Blanc rosé */
+            }
+            .title-text {
+                text-align: center;
+                font-size: 26px;
+                font-weight: bold;
+                color: #B22222; /* Rouge bordeaux */
+                font-family: 'Arial', sans-serif;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Création du bloc stylisé
+    st.markdown("""
+        <div class="custom-box">
+            <h1 class="title-text">🩸Campagne de don de sang : Save a Life, Donate Blood</h1>
+        </div>
+    """, unsafe_allow_html=True)
+
     st.image(logo, use_column_width=True)
 
     st.markdown("""
@@ -81,28 +102,34 @@ if not st.session_state.auth_status:
     if st.button("Accéder aux Fonctionnalités"):
         st.session_state.auth_page = True
         st.rerun()
-    st.markdown("---")
-    st.markdown("📌 **Projet réalisé Par la Data Storytellers Team dans le cadre du Challenge de Visualisation des Données** | 🚀 Développé avec **Python & Streamlit**")
-
+    
 # Interface d'authentification
 if "auth_page" in st.session_state and st.session_state.auth_page:
-    st.title("Authentification")
 
-    username = st.text_input("Nom d'utilisateur")
-    password = st.text_input("Mot de passe", type="password")
+    
+    with st.container():
+        colg,colc,cold=st.columns([1, 2, 1])  # 1:1:2 signifie que la colonne du milieu est deux fois plus large  
 
-    if st.button("Valider"):
-        if username == "admin" and password == "password123":  # 🔹 Remplace par ta logique d'authentification
-            st.session_state.auth_status = True
-            st.session_state.username = username
-            st.session_state.auth_page = False
-            st.rerun()  # Rafraîchir pour charger la nouvelle interface
-        else:
-            st.error("Identifiants incorrects. Veuillez réessayer.")
-
-    if st.button("Retour à l'accueil"):
-        del st.session_state["auth_page"]
-        st.rerun()
+        with colc:
+            st.subheader("Connexion 🔒")
+            username = st.text_input("Nom d'utilisateur 👤")
+            password = st.text_input("Mot de passe 🔑", type="password")
+            col1,col2,col3=st.columns(3)
+            with col1 :
+                if st.button("✅ Valider"):
+                    if username == "admin" and password == "password123":  # 🔹 Remplace par ta logique d'authentification
+                        st.session_state.auth_status = True
+                        st.session_state.username = username
+                        st.session_state.auth_page = False
+                        st.rerun()  # Rafraîchir pour charger la nouvelle interface
+                    else:
+                        st.error("❌ Identifiants incorrects. Veuillez réessayer.")
+            with col3:
+                if st.button("🏠 Accueil"):
+                    del st.session_state["auth_page"]
+                    st.rerun()
+    st.markdown("---")
+    st.markdown("📌 **Projet réalisé Par la Data Storytellers Team dans le cadre du Challenge de Visualisation des Données** | 🚀 Développé avec **Python & Streamlit**")
 
 # Interface après connexion (avec Sidebar)
 if st.session_state.auth_status:
