@@ -7,7 +7,7 @@ path = data_dir('modele_eligibilite.joblib')
 
 def ml_analyse():
     # Charger le modèle
-    model = joblib.load('path')
+    model = joblib.load(path)
     
     # Interface utilisateur avec Streamlit
     st.title("🩸 Prédiction d'Éligibilité au Don de Sang")
