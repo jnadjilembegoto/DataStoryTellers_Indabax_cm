@@ -3,12 +3,15 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 from datetime import datetime
-
+import plotly.graph_objs as go 
+from dateutil.relativedelta import relativedelta  # Pour le calcul précis des mois/jours
+import time
 from Datas.data_link import data_dir
 path = data_dir('base_streamlit_storytellers.xlsx')
-#@st.cache_data
-df = pd.read_excel(path, sheet_name='donneur')
-df['Horodateur'] = pd.to_datetime(df['Horodateur'])
+
+df = pd.read_excel(path, sheet_name='year')
+df['Date de remplissage de la fiche'] = pd.to_datetime(df['Date de remplissage de la fiche'])
+
 
 def fonctionnalities_load():
     
@@ -31,114 +34,97 @@ def fonctionnalities_load():
         }
         </style>
         """, unsafe_allow_html=True)
-    st.title(" Vue globale sur la campagne")
+    st.title("👁️ Vue globale sur la campagne")
+    st.markdown("---")
+    # ---- 2. STATISTIQUES URGENCES ----  
+    with st.container():
+        st.subheader("📊 L'urgence en chiffres au Cameroun")
+        cols = st.columns(3)
+        with cols[0]:
+            st.metric("Besoin en sang/an", "> 400 000", help="MINSANTE, Cameroun, 2023")
+        with cols[1]:
+            st.metric("Dons annuels", "~150 000", "+12% vs 2022",help="MINSANTE, Cameroun, 2023")
+        with cols[2]:
+            st.metric("Taux de donneurs", "0.8%", "De la population éligible",help="MINSANTE, Cameroun, 2023")
     
     # Section statistiques
-    with st.container():
-        st.subheader("📊 Statistiques clés")
-        stats_col1, stats_col2, stats_col3, stats_col4 = st.columns(4)
-        
-        with stats_col1:
-            st.metric("Donneuses", len(df[df['Sexe'] == 'Feminin']))
-            
-        with stats_col2:
-            st.metric("Donneurs", len(df[df['Sexe'] == 'Masculin']))
-            
-        with stats_col3:
-            most_common_blood = df['Groupe Sanguin ABO / Rhesus'].mode()[0]
-            st.metric("Groupe sanguin le plus fréquent", most_common_blood)
-        
-        with stats_col4:
-            avg_age = int(df['Age'].mean())
-            st.metric("Âge moyen des donneurs", f"{avg_age} ans")
-
-    # Première ligne avec deux colonnes
-    col1, col2 = st.columns([2, 1])
-
-    with col1:
-        with st.container():
-            st.subheader("🔵 Répartition des groupes sanguins")
-            
-            # Diagramme circulaire
-            blood_counts = df['Groupe Sanguin ABO / Rhesus'].value_counts().reset_index()
-            blood_counts.columns = ['Groupe Sanguin', 'Nombre']
-            
-            fig = px.pie(blood_counts, 
-                        values='Nombre', 
-                        names='Groupe Sanguin', 
-                        hole=0.3,
-                        color_discrete_sequence=px.colors.sequential.RdBu)
-            fig.update_traces(textposition='inside', textinfo='percent+label')
-            st.plotly_chart(fig, use_container_width=True)
-
-    with col2:
-        with st.container():
-            st.subheader("🩸 Dons")
-            
-            # Total des dons
-            total_donations = len(df)
-            st.metric("Total des dons", total_donations)
-            
-            # Détails par groupe sanguin
-            st.markdown("**Dons par groupe sanguin**")
-            blood_type_counts = df['Groupe Sanguin ABO / Rhesus'].value_counts()
-            
-            # Affichage en 2 colonnes
-            b_col1, b_col2 = st.columns(2)
-            
-            for i, (blood_type, count) in enumerate(blood_type_counts.items()):
-                if i % 2 == 0:
-                    with b_col1:
-                        st.metric(blood_type, count)
-                else:
-                    with b_col2:
-                        st.metric(blood_type, count)
-
-    # Deuxième ligne avec deux colonnes
-    col3, col4 = st.columns([1, 2])
-
-    with col3:
-        with st.container():
-            st.subheader("👥 Donneurs")
-            
-            # Nombre de donneurs uniques (approximation)
-            active_donors = df['Horodateur'].nunique()
-            st.metric("Donneurs actifs", active_donors)
-            
-            # Prochaine collecte
-            next_drive = "24 Juillet 2024"
-            st.metric("Prochaine collecte", next_drive)
-            st.caption("Date prévue")
-
-    with col4:
-        with st.container():
-            st.subheader("📈 Analyses complémentaires")
-            
-            # Sélecteur d'analyse
-            analysis_option = st.selectbox("Analyser par :", 
-                                        ['Sexe', 'Age', 'Type de donation', 'Phenotype'])
-            
-            if analysis_option == 'Age':
-                fig = px.histogram(df, x='Age', nbins=20, 
-                                title="Répartition par âge des donneurs",
-                                labels={'Age': 'Âge', 'count': 'Nombre'},
-                                color_discrete_sequence=['#ff4b4b'])
-                fig.update_layout(yaxis_title="Nombre de donneurs")
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                counts = df[analysis_option].value_counts().reset_index()
-                counts.columns = [analysis_option, 'Nombre']
-                
-                fig = px.bar(counts, 
-                            x=analysis_option, 
-                            y='Nombre', 
-                            title=f"Répartition par {analysis_option.lower()}",
-                            labels={analysis_option: analysis_option, 'Nombre': 'Nombre'},
-                            color=analysis_option,
-                            color_discrete_sequence=px.colors.sequential.RdBu)
-                st.plotly_chart(fig, use_container_width=True)
+    
 
 
-    # Pied de page
+    # Fonction pour calculer la durée en mois et jours
+    def calculate_duration(start, end):
+        rd = relativedelta(end, start)
+        months = rd.years * 12 + rd.months
+        days = rd.days
+        return months, days
+
+    # Calcul de la durée si une plage valide est sélectionnée
+    duration_str = "N/A"
+    
     st.markdown("---")
-    st.caption("Dernière mise à jour : " + datetime.now().strftime("%d/%m/%Y %H:%M"))
+    # Section statistiques
+    with st.container():
+        col_tit1,col_ti2=st.columns(2)
+        with col_tit1:
+            st.subheader("📜 Historique campagne -Douala")
+        with col_ti2:
+            min_date = df['Date de remplissage de la fiche'].min().to_pydatetime()
+            max_date = df['Date de remplissage de la fiche'].max().to_pydatetime()
+            
+            date_range = st.date_input(
+                "🔎 Période d'observation",
+                value=(min_date, max_date),
+                min_value=min_date,
+                max_value=max_date,
+                format="DD/MM/YYYY"
+            )
+            
+            # Vérification qu'une plage valide est sélectionnée
+            if len(date_range) == 2:
+                start_date, end_date = date_range
+                filtered_df = df[
+                    (df['Date de remplissage de la fiche'].dt.date >= start_date) & 
+                    (df['Date de remplissage de la fiche'].dt.date <= end_date)
+                ]
+            else:
+                filtered_df = df
+                st.warning("Veuillez sélectionner une plage de dates valide")
+
+        stats_col1, stats_col2, stats_col3 = st.columns(3)
+        with stats_col1:
+            if len(date_range) == 2:
+                start_date, end_date = date_range
+                months, days = calculate_duration(start_date, end_date)
+                duration_str = f"{months} mois et {days} jrs"
+            st.metric("📅 Durée de campagne", duration_str)
+        with stats_col2:
+            st.metric("👥 Total des participants", len(filtered_df["Date de remplissage de la fiche"]))
+        with stats_col3:
+            nb_elig = len(filtered_df[filtered_df["ÉLIGIBILITÉ AU DON."]=="Eligible"])
+            st.metric("✅ Eligibles au don de sang", f"{nb_elig} Personnes")
+
+    
+    with st.container():
+        st.subheader("🔵 Evolution du nombre des participants à la campagne")
+                    
+                    # Compter les occurrences de chaque date  
+        occurrences = filtered_df['Date de remplissage de la fiche'].value_counts().sort_index()  
+
+                    #occurrences = df['Date de remplissage de la fiche'].value_counts().sort_index()  
+        occurrences = occurrences.reset_index()  
+        occurrences.columns = ['Date de remplissage de la fiche', 'Occurrences']  # Renommer les colonnes pour la clarté  
+
+                # Créer un graphique vide
+        fig = px.line(occurrences.iloc[:1], x="Date de remplissage de la fiche", y="Occurrences", markers=True, title="Progression")
+
+        # Afficher le graphique dans Streamlit
+        chart = st.plotly_chart(fig, use_container_width=True)
+
+        # Animation : Ajouter les points progressivement
+        for i in range(2, len(occurrences) + 1):
+            fig = px.line(occurrences.iloc[:i], x="Date de remplissage de la fiche", y="Occurrences", markers=True, title="Progression")
+            chart.plotly_chart(fig, use_container_width=True)
+            time.sleep(0.5)
+        
+            
+            
