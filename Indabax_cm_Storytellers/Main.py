@@ -111,23 +111,25 @@ if "auth_page" in st.session_state and st.session_state.auth_page:
         colg,colc,cold=st.columns([1, 2, 1])  # 1:1:2 signifie que la colonne du milieu est deux fois plus large  
 
         with colc:
-            st.subheader("Connexion 🔒")
-            username = st.text_input("Nom d'utilisateur 👤")
-            password = st.text_input("Mot de passe 🔑", type="password")
-            col1,col2,col3=st.columns(3)
-            with col1 :
-                if st.button("✅ Valider"):
-                    if username == "admin" and password == "password123":  # 🔹 Remplace par ta logique d'authentification
+            
+            # Utilisation d'un formulaire pour valider avec "Enter"
+            with st.form(key="login_form"):
+                st.subheader("Connexion 🔒")
+                username = st.text_input("Nom d'utilisateur 👤")
+                password = st.text_input("Mot de passe 🔑", type="password")
+
+                # Bouton de validation du formulaire (Enter fonctionne aussi)
+                submit_button = st.form_submit_button("✅ Valider")
+
+                if submit_button:  # Vérifie si le formulaire est soumis
+                    if username == "admin" and password == "password123":  
                         st.session_state.auth_status = True
                         st.session_state.username = username
                         st.session_state.auth_page = False
                         st.rerun()  # Rafraîchir pour charger la nouvelle interface
                     else:
                         st.error("❌ Identifiants incorrects. Veuillez réessayer.")
-            with col3:
-                if st.button("🏠 Accueil"):
-                    del st.session_state["auth_page"]
-                    st.rerun()
+                
     st.markdown("---")
     st.markdown("📌 **Projet réalisé Par la Data Storytellers Team dans le cadre du Challenge de Visualisation des Données** | 🚀 Développé avec **Python & Streamlit**")
 
