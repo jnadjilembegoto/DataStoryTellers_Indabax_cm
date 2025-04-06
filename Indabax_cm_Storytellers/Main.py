@@ -79,7 +79,7 @@ if not st.session_state.auth_status:
 
     st.markdown("""
     Bienvenue sur l'application interactive de suivi des campagnes de don de sang. 
-    Ce tableau de bord permet d'explorer et d'analyser les données des donneurs de sangafin d'améliorer les futures campagnes.
+    Ce tableau de bord permet d'explorer et d'analyser les données des donneurs de sang afin d'améliorer les futures campagnes.
     """)
     st.markdown('---')
     # Présentation des fonctionnalités clés
