@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 from kmodes.kmodes import KModes
 from streamlit_echarts import st_echarts
 from Datas.data_link import data_dir
+import colorsys
 
 
 def page_profil_load():
