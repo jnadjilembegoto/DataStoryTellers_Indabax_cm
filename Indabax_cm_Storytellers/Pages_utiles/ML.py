@@ -14,7 +14,7 @@ def ml_analyse():
     st.title("🤖 Prédiction d'Éligibilité au Don de Sang")
     st.markdown("---")
     st.write("Cochez les reponses applicables sur le potentiel donneur")
-    st.markdown("---")
+    
     # Collecte des données utilisateur
     genre = st.radio("Genre", ["Homme", "Femme"])
     age = st.number_input("Âge", min_value=0, max_value=120, value=30)
@@ -77,7 +77,7 @@ def ml_analyse():
                         ]).reshape(1, -1)
     st.markdown("---")
     st.write("Cliquez sur le bouton suivant pour prédire l'état d'éligibilité du potentiel donneur")
-    st.markdown("---")
+    
     # Bouton de prédiction
     if st.button("Prédire l'éligibilité"):
         prediction = model.predict(donnees)[0]
@@ -140,8 +140,8 @@ def ml_analyse():
             document.save(byte_io)
             byte_io.seek(0)
             st.markdown("---")
-            st.write("Cochez les reponses applicables sur le potentiel donneur")
-            st.markdown("---")
+            st.write("Cliquez sur le bouton télécharger le rapport pour télécharger le résultat de la prédiction")
+            
             # Bouton pour télécharger le rapport
             st.download_button(
                 label="Télécharger le rapport",
