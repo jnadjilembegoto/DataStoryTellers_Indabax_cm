@@ -108,7 +108,7 @@ def fonctionnalities_load():
         st.subheader("🔵 Evolution du nombre des participants à la campagne")
                     
                     # Compter les occurrences de chaque date  
-        occurrences = filtered_df['Date de remplissage de la fiche'].value_counts().sort_index()  
+        """occurrences = filtered_df['Date de remplissage de la fiche'].value_counts().sort_index()  
 
                     #occurrences = df['Date de remplissage de la fiche'].value_counts().sort_index()  
         occurrences = occurrences.reset_index()  
@@ -124,7 +124,7 @@ def fonctionnalities_load():
         for i in range(2, len(occurrences) + 1):
             fig = px.line(occurrences.iloc[:i], x="Date de remplissage de la fiche", y="Occurrences", markers=True, title="Progression")
             chart.plotly_chart(fig, use_container_width=True)
-            time.sleep(0.5)
+            time.sleep(0.5)"""
         
             
             
