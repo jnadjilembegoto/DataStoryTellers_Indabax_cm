@@ -101,7 +101,7 @@ if not st.session_state.auth_status:
     st.markdown("### 🌍 Explorez les fonctionnalités dès maintenant !")
     if st.button("Accéder aux Fonctionnalités"):
         st.session_state.auth_page = True
-        st.rerun()
+        #st.rerun()
     
 # Interface d'authentification
 if "auth_page" in st.session_state and st.session_state.auth_page:
