@@ -11,12 +11,7 @@ import graphviz
 from Datas.data_link import data_dir
 path = data_dir('base_streamlit_storytellers.xlsx')
     
-data = pd.read_excel(path, sheet_name='year')
-## Importation de la deuxième base
-data2 = pd.read_excel(path, sheet_name='age')
 
-# Charger les données
-df=data.copy()
 
 ## Design d'affichage 
 def page_efficacity():
@@ -887,6 +882,12 @@ def page_efficacity():
 
 
     # Création de colonne mois 
+    data = pd.read_excel(path, sheet_name='year')
+    ## Importation de la deuxième base
+    data2 = pd.read_excel(path, sheet_name='age')
+    
+    # Charger les données
+    df=data.copy()
 
     colonne_date="Date de remplissage de la fiche"
 
