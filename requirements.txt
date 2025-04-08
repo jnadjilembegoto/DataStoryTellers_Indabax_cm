@@ -38,6 +38,7 @@ six==1.16.0
 smmap==5.0.1
 streamlit==1.37.1
 streamlit-echarts
+streamlit-plotly-events
 tenacity==8.5.0
 threadpoolctl==3.5.0
 toml==0.10.2
@@ -55,4 +56,3 @@ folium
 streamlit-folium
 kmodes
 openai
-streamlit_plotly_events
