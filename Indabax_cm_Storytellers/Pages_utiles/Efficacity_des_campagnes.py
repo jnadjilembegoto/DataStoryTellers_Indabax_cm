@@ -564,7 +564,7 @@ def visualiser_dons_par_periode(df, colonne_date, periode):
 
     if periode == 'jour':
         # Extraire le jour de la semaine
-        df['Periode'] = df[colonne_date].dt.day_name(locale='fr_FR')
+        df['Periode'] = df[colonne_date].dt.day_name(locale='fr_FR.UTF-8')
         periode_ordre = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
         titre_nombre = 'Nombre de dons de sang par jour de la semaine'
         titre_proportion = 'Proportion des dons de sang par jour de la semaine'
@@ -572,7 +572,7 @@ def visualiser_dons_par_periode(df, colonne_date, periode):
         df['Periode'] = pd.Categorical(df['Periode'], categories=periode_ordre, ordered=True)
     elif periode == 'mois':
         # Extraire le mois
-        df['Periode'] = df[colonne_date].dt.month_name(locale='fr_FR')
+        df['Periode'] = df[colonne_date].dt.month_name(locale='fr_FR.UTF-8')
         periode_ordre = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
                         'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
         titre_nombre = 'Nombre de dons de sang par mois'
