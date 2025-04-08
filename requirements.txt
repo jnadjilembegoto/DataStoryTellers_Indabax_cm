@@ -55,3 +55,4 @@ folium
 streamlit-folium
 kmodes
 openai
+streamlit_plotly_events
