@@ -9,7 +9,7 @@ import colorsys
 from streamlit_plotly_events import plotly_events
 import graphviz
 from Datas.data_link import data_dir
-path = data_dir('base_streamlit_storytellers.xlsx')
+
 ## Design d'affichage 
 def page_efficacity():
     st.markdown("""
@@ -306,6 +306,8 @@ def page_efficacity():
     #st.title(" Competition INDA Hackaton")
 
     st.header('Efficacité de la campagne')
+    path = data_dir('base_streamlit_storytellers.xlsx')
+    
     data = pd.read_excel(path, sheet_name='year')
     ## Importation de la deuxième base
     data2 = pd.read_excel(path, sheet_name='age')
