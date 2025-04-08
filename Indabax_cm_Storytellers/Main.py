@@ -8,7 +8,8 @@ from Pages_utiles.Fidelisation_donneurs import page_fidelisation
 from Pages_utiles.Sante_aligibility import page_santeElig
 from Pages_utiles.ACP import acp_analyse
 from Pages_utiles.ML import ml_analyse
-from Pages_utiles.Profil_donneurs2 import page_profil_load
+#from Pages_utiles.Profil_donneurs2 import page_profil_load
+from Pages_utiles.Profil_des_donneurs import page_profil_load
 from Pages_utiles.carto2 import carto_page_load
 from Pages_utiles.ChatBlood import chat_load
 from Pages_utiles.Fonctionnalities import fonctionnalities_load
