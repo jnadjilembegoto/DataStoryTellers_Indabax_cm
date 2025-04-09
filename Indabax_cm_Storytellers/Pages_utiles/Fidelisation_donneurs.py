@@ -1006,7 +1006,7 @@ def page_fidelisation():
         
 
         class_age=base_class_age["Classe_Age"].unique()
-        age_selectionne=st.multiselect("choisissez une tranche d'age", options=class_age)#, default=class_age[0]
+        age_selectionne=st.multiselect("choisissez une tranche d'age", options=class_age,default=class_age[0])#
         if age_selectionne:
             base_age_filtre=base_class_age[base_class_age["Classe_Age"].isin(age_selectionne)]
             chart_data = {}
