@@ -428,6 +428,7 @@ def page_fidelisation():
             st.info("Veuillez sélectionner au moins deux variables.")
 
 
+
     ## Visualisation journalier ou mensuel
     def visualiser_dons_par_periode(df, colonne_date, periode):
         """
@@ -1133,7 +1134,6 @@ def page_fidelisation():
         else:
             st.write("Veuillez choisir au moins une tranche d'age ")
             # Ajout de styles CSS pour améliorer l'apparence
-
     st.markdown("""
         <style>
             /* Centrage du texte */
@@ -1153,7 +1153,7 @@ def page_fidelisation():
             }
         </style>
     """, unsafe_allow_html=True)
-"""
+
 
 
 
