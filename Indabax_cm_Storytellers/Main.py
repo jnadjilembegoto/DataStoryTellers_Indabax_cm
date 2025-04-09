@@ -26,7 +26,8 @@ logo_path = main_dir("campagne_cameroun_dst.webp")
 logo = Image.open(logo_path)
 coeur_path=main_dir("sang_coeur.webp")
 coeur= Image.open(coeur_path)
-
+qr_path=main_dir("Indabax_qr_code.jpeg")
+qr_code= Image.open(qr_path)
 
 
 # Initialisation de l'état de session
@@ -42,6 +43,7 @@ if not st.session_state.auth_status:
     st.sidebar.markdown('---')
     st.sidebar.image(coeur, use_column_width=True)
     st.sidebar.markdown('---')
+    st.sidebar.image(qr_code, use_column_width=True)
     
     # En-tête de la page
     #st.title("🩸Save a Life, Donate Blood")
