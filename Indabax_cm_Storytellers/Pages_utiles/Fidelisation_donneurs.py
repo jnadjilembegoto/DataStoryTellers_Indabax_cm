@@ -1135,26 +1135,7 @@ def page_fidelisation():
         else:
             st.write("Veuillez choisir au moins une tranche d'age ")
             # Ajout de styles CSS pour améliorer l'apparence
-    st.markdown("""
-        <style>
-            /* Centrage du texte */
-            .css-1v3fvcr { text-align: center !important; }
-
-            /* Style des graphiques Plotly */
-            .stPlotlyChart {
-                background-color: #D6EAF8; /* Couleur douce de fond */
-                border: 3px solid #C0392B; /* 🔴 contour rouge sang */
-                box-shadow: 5px 5px 15px rgba(192, 57, 43, 0.4); /* ombre rouge */
-                border-radius: 10px;
-                padding: 10px;
-                height: 500px;
-            }
-
-            h4 {
-                font-weight: bold;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+    
 
 
 
