@@ -17,7 +17,7 @@ data = pd.read_excel(path, sheet_name='year')
 
 def page_fidelisation():
     # --- CONTENU PRINCIPAL DE L'APPLICATION ---
-    st.markdown("<h1 class='title'>Tableau de Bord Don de Sang</h1>", unsafe_allow_html=True)
+    #st.markdown("<h1 class='title'>Tableau de Bord Don de Sang</h1>", unsafe_allow_html=True)
 
 
     # --- STYLE CSS ---
