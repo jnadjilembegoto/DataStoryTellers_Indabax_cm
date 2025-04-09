@@ -120,13 +120,13 @@ if "auth_page" in st.session_state and st.session_state.auth_page:
             with st.form(key="login_form"):
                 st.subheader("Connexion 🔒")
                 username = st.text_input("Nom d'utilisateur 👤",help="Entrez : admin")
-                password = st.text_input("Mot de passe 🔑", type="password",help="Entrez : password123")
+                password = st.text_input("Mot de passe 🔑", type="password",help="Entrez : 12")
 
                 # Bouton de validation du formulaire (Enter fonctionne aussi)
                 submit_button = st.form_submit_button("✅ Valider")
 
                 if submit_button:  # Vérifie si le formulaire est soumis
-                    if username == "admin" and password == "password123":  
+                    if username == "admin" and password == "12":  
                         st.session_state.auth_status = True
                         st.session_state.username = username
                         st.session_state.auth_page = False
