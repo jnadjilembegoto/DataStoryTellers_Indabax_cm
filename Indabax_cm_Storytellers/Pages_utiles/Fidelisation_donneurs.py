@@ -427,733 +427,733 @@ def page_fidelisation():
         elif len(colonnes_choisies) < 2:
             st.info("Veuillez sélectionner au moins deux variables.")
 
-"""
-    ## Visualisation journalier ou mensuel
-    def visualiser_dons_par_periode(df, colonne_date, periode):
-        """
-        Visualise le nombre ou la proportion de dons de sang par jour ou par mois.
 
-        Args:
-            df (pd.DataFrame): La base de données contenant les informations sur les dons.
-            colonne_date (str): Le nom de la colonne contenant la date du don.
-            periode (str, optional): La période d'agrégation ('jour' ou 'mois'). Par défaut 'jour'.
-        """
-        if colonne_date not in df.columns:
-            st.error(f"La colonne '{colonne_date}' n'existe pas dans le DataFrame.")
-            return
+#     ## Visualisation journalier ou mensuel
+#     def visualiser_dons_par_periode(df, colonne_date, periode):
+#         """
+#         Visualise le nombre ou la proportion de dons de sang par jour ou par mois.
 
-        try:
-            df[colonne_date] = pd.to_datetime(df[colonne_date])
-        except ValueError:
-            st.error(f"Impossible de convertir la colonne '{colonne_date}' en format datetime. Veuillez vérifier le format des dates.")
-            return
+#         Args:
+#             df (pd.DataFrame): La base de données contenant les informations sur les dons.
+#             colonne_date (str): Le nom de la colonne contenant la date du don.
+#             periode (str, optional): La période d'agrégation ('jour' ou 'mois'). Par défaut 'jour'.
+#         """
+#         if colonne_date not in df.columns:
+#             st.error(f"La colonne '{colonne_date}' n'existe pas dans le DataFrame.")
+#             return
 
-        if periode == 'jour':
-            # Extraire le jour de la semaine
-            df['Periode'] = df[colonne_date].dt.strftime('%A')#dt.day_name(locale='fr_FR')
-            periode_ordre = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  #['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
-            titre_nombre = 'Nombre de dons de sang par jour de la semaine'
-            titre_proportion = 'Proportion des dons de sang par jour de la semaine'
-            label_axe = 'Jour de la semaine'
-            df['Periode'] = pd.Categorical(df['Periode'], categories=periode_ordre, ordered=True)
-        elif periode == 'mois':
-            # Extraire le mois
-            df['Periode'] = df[colonne_date].dt.strftime('%B')#dt.month_name(locale='fr_FR')
-            periode_ordre = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December']  #['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin','Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
-            titre_nombre = 'Nombre de dons de sang par mois'
-            titre_proportion = 'Proportion des dons de sang par mois'
-            label_axe = 'Mois'
-            df['Periode'] = pd.Categorical(df['Periode'], categories=periode_ordre, ordered=True)
-        else:
-            st.error(f"La valeur '{periode}' n'est pas valide pour la période. Veuillez choisir 'jour' ou 'mois'.")
-            return
+#         try:
+#             df[colonne_date] = pd.to_datetime(df[colonne_date])
+#         except ValueError:
+#             st.error(f"Impossible de convertir la colonne '{colonne_date}' en format datetime. Veuillez vérifier le format des dates.")
+#             return
 
-        # Calculer le nombre par période
-        dons_par_periode = df['Periode'].value_counts().sort_index()
+#         if periode == 'jour':
+#             # Extraire le jour de la semaine
+#             df['Periode'] = df[colonne_date].dt.strftime('%A')#dt.day_name(locale='fr_FR')
+#             periode_ordre = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  #['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+#             titre_nombre = 'Nombre de dons de sang par jour de la semaine'
+#             titre_proportion = 'Proportion des dons de sang par jour de la semaine'
+#             label_axe = 'Jour de la semaine'
+#             df['Periode'] = pd.Categorical(df['Periode'], categories=periode_ordre, ordered=True)
+#         elif periode == 'mois':
+#             # Extraire le mois
+#             df['Periode'] = df[colonne_date].dt.strftime('%B')#dt.month_name(locale='fr_FR')
+#             periode_ordre = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December']  #['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin','Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+#             titre_nombre = 'Nombre de dons de sang par mois'
+#             titre_proportion = 'Proportion des dons de sang par mois'
+#             label_axe = 'Mois'
+#             df['Periode'] = pd.Categorical(df['Periode'], categories=periode_ordre, ordered=True)
+#         else:
+#             st.error(f"La valeur '{periode}' n'est pas valide pour la période. Veuillez choisir 'jour' ou 'mois'.")
+#             return
 
-        # Calculer la proportion par période
-        proportions_par_periode = df['Periode'].value_counts(normalize=True).sort_index() * 100
+#         # Calculer le nombre par période
+#         dons_par_periode = df['Periode'].value_counts().sort_index()
 
-        # Choisir le type de visualisation
-        type_visualisation = st.radio(
-            "Type de visualisation :",
-            ("Nombre", "Proportion (%)")
-        )
+#         # Calculer la proportion par période
+#         proportions_par_periode = df['Periode'].value_counts(normalize=True).sort_index() * 100
 
-        if type_visualisation == "Nombre":
-            fig = px.bar(dons_par_periode, x=dons_par_periode.index, y=dons_par_periode.values,
-                        title=titre_nombre,
-                        labels={'index': label_axe, 'y': 'Nombre de dons'})
-            st.plotly_chart(fig, use_container_width=True)
-        elif type_visualisation == "Proportion (%)":
-            fig = px.bar(proportions_par_periode, x=proportions_par_periode.index, y=proportions_par_periode.values,
-                        title=titre_proportion,
-                        labels={'index': label_axe, 'y': 'Proportion (%)'})
-            st.plotly_chart(fig, use_container_width=True)
+#         # Choisir le type de visualisation
+#         type_visualisation = st.radio(
+#             "Type de visualisation :",
+#             ("Nombre", "Proportion (%)")
+#         )
 
-    ## Créer une clonne classe d'âge
-    def creer_classe_age_amplitude_egale(df, nom_colonne_age, nom_nouvelle_colonne='Classe_Age', n_classes=5):
-        """
-        Crée une nouvelle colonne 'Classe_Age' avec un nombre spécifié de classes
-        ayant une amplitude égale (entière), basées sur le minimum et le maximum
-        entiers de la colonne d'âge.
+#         if type_visualisation == "Nombre":
+#             fig = px.bar(dons_par_periode, x=dons_par_periode.index, y=dons_par_periode.values,
+#                         title=titre_nombre,
+#                         labels={'index': label_axe, 'y': 'Nombre de dons'})
+#             st.plotly_chart(fig, use_container_width=True)
+#         elif type_visualisation == "Proportion (%)":
+#             fig = px.bar(proportions_par_periode, x=proportions_par_periode.index, y=proportions_par_periode.values,
+#                         title=titre_proportion,
+#                         labels={'index': label_axe, 'y': 'Proportion (%)'})
+#             st.plotly_chart(fig, use_container_width=True)
 
-        :param df: DataFrame contenant la colonne d'âge.
-        :param nom_colonne_age: Nom de la colonne contenant l'âge des individus.
-        :param nom_nouvelle_colonne: Nom de la nouvelle colonne à créer (par défaut 'Classe_Age').
-        :param n_classes: Le nombre de classes d'âge à créer (par défaut 5).
-        :return: DataFrame avec la nouvelle colonne 'Classe_Age'.
-        """
-        if nom_colonne_age not in df.columns:
-            print(f"Erreur: La colonne '{nom_colonne_age}' n'existe pas dans le DataFrame.")
-            return df
+#     ## Créer une clonne classe d'âge
+#     def creer_classe_age_amplitude_egale(df, nom_colonne_age, nom_nouvelle_colonne='Classe_Age', n_classes=5):
+#         """
+#         Crée une nouvelle colonne 'Classe_Age' avec un nombre spécifié de classes
+#         ayant une amplitude égale (entière), basées sur le minimum et le maximum
+#         entiers de la colonne d'âge.
 
-        min_age = int(df[nom_colonne_age].min())
-        max_age = int(df[nom_colonne_age].max())
+#         :param df: DataFrame contenant la colonne d'âge.
+#         :param nom_colonne_age: Nom de la colonne contenant l'âge des individus.
+#         :param nom_nouvelle_colonne: Nom de la nouvelle colonne à créer (par défaut 'Classe_Age').
+#         :param n_classes: Le nombre de classes d'âge à créer (par défaut 5).
+#         :return: DataFrame avec la nouvelle colonne 'Classe_Age'.
+#         """
+#         if nom_colonne_age not in df.columns:
+#             print(f"Erreur: La colonne '{nom_colonne_age}' n'existe pas dans le DataFrame.")
+#             return df
 
-        if min_age == max_age:
-            df[nom_nouvelle_colonne] = f"Classe unique ({min_age} ans)"
-            return df
+#         min_age = int(df[nom_colonne_age].min())
+#         max_age = int(df[nom_colonne_age].max())
 
-        plage_age = max_age - min_age
-        if plage_age < n_classes:
-            print(f"Avertissement: La plage d'âge ({plage_age}) est inférieure au nombre de classes souhaité ({n_classes}). Les classes pourraient ne pas avoir une amplitude strictement égale.")
-            amplitude_flottante = plage_age / n_classes
-            bins = [min_age + round(i * amplitude_flottante) for i in range(n_classes + 1)]
-            # S'assurer que la dernière borne est au moins max_age
-            bins[-1] = max(bins[-1], max_age + 1)
-            # Supprimer les bornes dupliquées qui pourraient résulter de l'arrondi
-            bins = sorted(list(set(bins)))
-            if len(bins) < n_classes + 1:
-                n_classes = len(bins) - 1
-            labels = [f'[{bins[i]}-{bins[i+1]-1}]' for i in range(n_classes)]
+#         if min_age == max_age:
+#             df[nom_nouvelle_colonne] = f"Classe unique ({min_age} ans)"
+#             return df
 
-        else:
-            amplitude = int(np.ceil(plage_age / n_classes))  # Amplitude entière (arrondi supérieur)
-            bins = [min_age + i * amplitude for i in range(n_classes + 1)]
-            # Ajuster la dernière borne pour inclure max_age
-            if bins[-1] <= max_age:
-                bins[-1] = max_age + 1
-            labels = [f'[{bins[i]}-{bins[i+1]-1}]' for i in range(n_classes)]
+#         plage_age = max_age - min_age
+#         if plage_age < n_classes:
+#             print(f"Avertissement: La plage d'âge ({plage_age}) est inférieure au nombre de classes souhaité ({n_classes}). Les classes pourraient ne pas avoir une amplitude strictement égale.")
+#             amplitude_flottante = plage_age / n_classes
+#             bins = [min_age + round(i * amplitude_flottante) for i in range(n_classes + 1)]
+#             # S'assurer que la dernière borne est au moins max_age
+#             bins[-1] = max(bins[-1], max_age + 1)
+#             # Supprimer les bornes dupliquées qui pourraient résulter de l'arrondi
+#             bins = sorted(list(set(bins)))
+#             if len(bins) < n_classes + 1:
+#                 n_classes = len(bins) - 1
+#             labels = [f'[{bins[i]}-{bins[i+1]-1}]' for i in range(n_classes)]
 
-        df[nom_nouvelle_colonne] = pd.cut(df[nom_colonne_age], bins=bins, labels=labels, right=False, include_lowest=True)
+#         else:
+#             amplitude = int(np.ceil(plage_age / n_classes))  # Amplitude entière (arrondi supérieur)
+#             bins = [min_age + i * amplitude for i in range(n_classes + 1)]
+#             # Ajuster la dernière borne pour inclure max_age
+#             if bins[-1] <= max_age:
+#                 bins[-1] = max_age + 1
+#             labels = [f'[{bins[i]}-{bins[i+1]-1}]' for i in range(n_classes)]
 
-        return df
+#         df[nom_nouvelle_colonne] = pd.cut(df[nom_colonne_age], bins=bins, labels=labels, right=False, include_lowest=True)
 
-
-    def afficher_diagramme_en_anneau(base, var2):
-        if base.empty:
-            st.write("Aucune donnée disponible.")
-            return
-
-        # Préparer les données de répartition
-        count_data = base[var2].value_counts(normalize=True) * 100
-        data_chart = [
-            {"value": round(pct, 2), "name": str(cat)}
-            for cat, pct in count_data.items()
-        ]
-
-        option = {
-            "tooltip": {
-                "trigger": "item",
-                "formatter": "{b} : {d}%"
-            },
-            "legend": {
-                "orient": "vertical",
-                "left": "right",
-                "top": "center",
-                "textStyle": {
-                    "fontSize": 14
-                }
-            },
-            "series": [
-                {
-                    "name": var2,
-                    "type": "pie",
-                    "radius": ["25%", "50%"],  # donut
-                    "avoidLabelOverlap": False,
-                    "itemStyle": {
-                        "borderRadius": 10,
-                        "borderColor": "#fff",
-                        "borderWidth": 2
-                    },
-                    "label": {
-                        "show":False,
-                        "position": "outside",
-                        "formatter": "{b} : {d}%",
-                        "fontSize": 14
-                    },
-                    "labelLine": {
-                        "show":False
-                    },
-                    "emphasis": {
-                        "label": {
-                            "show":False,
-                            "fontSize": 16,
-                            "fontWeight": "bold"
-                        }
-                    },
-                    "data": data_chart
-                }
-            ]
-        }
-
-        st_echarts(options=option, height="400px",width="400px")
+#         return df
 
 
+#     def afficher_diagramme_en_anneau(base, var2):
+#         if base.empty:
+#             st.write("Aucune donnée disponible.")
+#             return
 
-    def afficher_histogramme(base, var2):
-        if base.empty:
-            st.write("Aucune donnée disponible pour ce quartier.")
-        else:
-            # Calculer les pourcentages
-            count_data = base[var2].value_counts(normalize=True) * 100  # Calculer le pourcentage
-            count_data = count_data.reset_index()
-            count_data.columns = [var2, 'Pourcentage']  # Renommer les colonnes
+#         # Préparer les données de répartition
+#         count_data = base[var2].value_counts(normalize=True) * 100
+#         data_chart = [
+#             {"value": round(pct, 2), "name": str(cat)}
+#             for cat, pct in count_data.items()
+#         ]
 
-            # Créer un histogramme des pourcentages
-            fig = px.bar(
-                count_data,
-                x=var2,
-                y='Pourcentage',
-                text='Pourcentage'  # Affichage automatique des pourcentages
-            )
-    # Formater les pourcentages avec deux décimales et le symbole '%'
-            fig.update_traces(texttemplate='%{text:.2f}%', textposition='auto')
-            # Masquer la légende
-            fig.update_traces(showlegend=False)
-            fig.update_layout(xaxis_title='')  # Titre de l'axe X vide
+#         option = {
+#             "tooltip": {
+#                 "trigger": "item",
+#                 "formatter": "{b} : {d}%"
+#             },
+#             "legend": {
+#                 "orient": "vertical",
+#                 "left": "right",
+#                 "top": "center",
+#                 "textStyle": {
+#                     "fontSize": 14
+#                 }
+#             },
+#             "series": [
+#                 {
+#                     "name": var2,
+#                     "type": "pie",
+#                     "radius": ["25%", "50%"],  # donut
+#                     "avoidLabelOverlap": False,
+#                     "itemStyle": {
+#                         "borderRadius": 10,
+#                         "borderColor": "#fff",
+#                         "borderWidth": 2
+#                     },
+#                     "label": {
+#                         "show":False,
+#                         "position": "outside",
+#                         "formatter": "{b} : {d}%",
+#                         "fontSize": 14
+#                     },
+#                     "labelLine": {
+#                         "show":False
+#                     },
+#                     "emphasis": {
+#                         "label": {
+#                             "show":False,
+#                             "fontSize": 16,
+#                             "fontWeight": "bold"
+#                         }
+#                     },
+#                     "data": data_chart
+#                 }
+#             ]
+#         }
 
-            # Afficher l'histogramme
-            st.plotly_chart(fig)
+#         st_echarts(options=option, height="400px",width="400px")
 
 
-    def generate_distinct_colors(n_colors):
-        """
-        Génère une palette automatique de couleurs distinctes
-        - Le choix des couleurs varie la teinte (H) sur le cercle chromatique,
-        la saturation (S) et la luminosité (V) sont ajustées pour rendre les couleurs bien visibles.
-        """
-        palette = []
+
+#     def afficher_histogramme(base, var2):
+#         if base.empty:
+#             st.write("Aucune donnée disponible pour ce quartier.")
+#         else:
+#             # Calculer les pourcentages
+#             count_data = base[var2].value_counts(normalize=True) * 100  # Calculer le pourcentage
+#             count_data = count_data.reset_index()
+#             count_data.columns = [var2, 'Pourcentage']  # Renommer les colonnes
+
+#             # Créer un histogramme des pourcentages
+#             fig = px.bar(
+#                 count_data,
+#                 x=var2,
+#                 y='Pourcentage',
+#                 text='Pourcentage'  # Affichage automatique des pourcentages
+#             )
+#     # Formater les pourcentages avec deux décimales et le symbole '%'
+#             fig.update_traces(texttemplate='%{text:.2f}%', textposition='auto')
+#             # Masquer la légende
+#             fig.update_traces(showlegend=False)
+#             fig.update_layout(xaxis_title='')  # Titre de l'axe X vide
+
+#             # Afficher l'histogramme
+#             st.plotly_chart(fig)
+
+
+#     def generate_distinct_colors(n_colors):
+#         """
+#         Génère une palette automatique de couleurs distinctes
+#         - Le choix des couleurs varie la teinte (H) sur le cercle chromatique,
+#         la saturation (S) et la luminosité (V) sont ajustées pour rendre les couleurs bien visibles.
+#         """
+#         palette = []
         
-        for i in range(n_colors):
-            # Ajuster la teinte pour garantir des couleurs distinctes
-            h = (i / n_colors) % 1.0  # Étaler les couleurs sur le cercle chromatique
-            s = 0.9 # Saturation élevée pour des couleurs vives
-            v = 0.9  # Luminosité un peu élevée pour ne pas avoir de couleurs trop sombres
+#         for i in range(n_colors):
+#             # Ajuster la teinte pour garantir des couleurs distinctes
+#             h = (i / n_colors) % 1.0  # Étaler les couleurs sur le cercle chromatique
+#             s = 0.9 # Saturation élevée pour des couleurs vives
+#             v = 0.9  # Luminosité un peu élevée pour ne pas avoir de couleurs trop sombres
             
-            # Convertir HSV en RGB
-            r, g, b = colorsys.hsv_to_rgb(h, s, v)
-            hex_color = '#{:02x}{:02x}{:02x}'.format(int(r*255), int(g*255), int(b*255))
-            palette.append(hex_color)
+#             # Convertir HSV en RGB
+#             r, g, b = colorsys.hsv_to_rgb(h, s, v)
+#             hex_color = '#{:02x}{:02x}{:02x}'.format(int(r*255), int(g*255), int(b*255))
+#             palette.append(hex_color)
         
-        return palette
+#         return palette
 
 
 
-    # Fonction pour créer un graphique en anneau avec style amélioré
-    def create_donut_chart(labels, values, title):
-        # Générer une palette de couleurs automatiquement selon le nombre de modalités
-        n = len(labels)
-        colors = generate_distinct_colors(n_colors=n)
+#     # Fonction pour créer un graphique en anneau avec style amélioré
+#     def create_donut_chart(labels, values, title):
+#         # Générer une palette de couleurs automatiquement selon le nombre de modalités
+#         n = len(labels)
+#         colors = generate_distinct_colors(n_colors=n)
 
-        fig = go.Figure(data=[go.Pie(
-            labels=labels, values=values, hole=0.4,
-            marker=dict(colors=colors, line=dict(color='#FFFFFF', width=2)),
-            textinfo='percent',
-            insidetextorientation='horizontal'
-        )])
+#         fig = go.Figure(data=[go.Pie(
+#             labels=labels, values=values, hole=0.4,
+#             marker=dict(colors=colors, line=dict(color='#FFFFFF', width=2)),
+#             textinfo='percent',
+#             insidetextorientation='horizontal'
+#         )])
         
-        fig.update_layout(
-            title=dict(text=title, font=dict(size=16, family="Arial", color="black"), x=0.1),
-            showlegend=True, legend=dict(orientation="h", y=-0.2),
-            margin=dict(l=20, r=20, t=40, b=20),
-            paper_bgcolor="rgba(0,0,0,0)", 
-            plot_bgcolor="rgba(0,0,0,0)",
-            **dict(width=350, height=400) # Ajoutez ou modifiez width et height ici
-        )
-        return fig
+#         fig.update_layout(
+#             title=dict(text=title, font=dict(size=16, family="Arial", color="black"), x=0.1),
+#             showlegend=True, legend=dict(orientation="h", y=-0.2),
+#             margin=dict(l=20, r=20, t=40, b=20),
+#             paper_bgcolor="rgba(0,0,0,0)", 
+#             plot_bgcolor="rgba(0,0,0,0)",
+#             **dict(width=350, height=400) # Ajoutez ou modifiez width et height ici
+#         )
+#         return fig
 
 
-    ## Calcul de l'âge au moment du fon de sang
-    def calculer_age_au_don(df, colonne_date_remplissage, colonne_date_naissance, colonne_age_resultat='Age au Don'):
-        """
-        Calcule l'âge des individus au moment du don de sang et ajoute une nouvelle colonne 'Age au Don'.
+#     ## Calcul de l'âge au moment du fon de sang
+#     def calculer_age_au_don(df, colonne_date_remplissage, colonne_date_naissance, colonne_age_resultat='Age au Don'):
+#         """
+#         Calcule l'âge des individus au moment du don de sang et ajoute une nouvelle colonne 'Age au Don'.
 
-        Args:
-            df (pd.DataFrame): Le DataFrame contenant les données des donneurs.
-            colonne_date_remplissage (str): Le nom de la colonne contenant la date de remplissage de la fiche.
-            colonne_date_naissance (str): Le nom de la colonne contenant la date de naissance.
-            colonne_age_resultat (str, optional): Le nom de la nouvelle colonne pour l'âge calculé.
-                                                Par défaut, elle est nommée 'Age au Don'.
+#         Args:
+#             df (pd.DataFrame): Le DataFrame contenant les données des donneurs.
+#             colonne_date_remplissage (str): Le nom de la colonne contenant la date de remplissage de la fiche.
+#             colonne_date_naissance (str): Le nom de la colonne contenant la date de naissance.
+#             colonne_age_resultat (str, optional): Le nom de la nouvelle colonne pour l'âge calculé.
+#                                                 Par défaut, elle est nommée 'Age au Don'.
 
-        Returns:
-            pd.DataFrame: Le DataFrame avec une nouvelle colonne contenant l'âge au moment du don.
-        """
-        # Convertir les colonnes de dates au format datetime si ce n'est pas déjà le cas
-        df[colonne_date_remplissage] = pd.to_datetime(df[colonne_date_remplissage])
-        df[colonne_date_naissance] = pd.to_datetime(df[colonne_date_naissance])
+#         Returns:
+#             pd.DataFrame: Le DataFrame avec une nouvelle colonne contenant l'âge au moment du don.
+#         """
+#         # Convertir les colonnes de dates au format datetime si ce n'est pas déjà le cas
+#         df[colonne_date_remplissage] = pd.to_datetime(df[colonne_date_remplissage])
+#         df[colonne_date_naissance] = pd.to_datetime(df[colonne_date_naissance])
 
-        # Calculer la différence entre les dates en jours
-        df['Difference_Jours'] = (df[colonne_date_remplissage] - df[colonne_date_naissance]).dt.days
+#         # Calculer la différence entre les dates en jours
+#         df['Difference_Jours'] = (df[colonne_date_remplissage] - df[colonne_date_naissance]).dt.days
 
-        # Calculer l'âge en années (approximation simple)
-        df[colonne_age_resultat] = (df['Difference_Jours'] / 365.25).round().astype(int)
+#         # Calculer l'âge en années (approximation simple)
+#         df[colonne_age_resultat] = (df['Difference_Jours'] / 365.25).round().astype(int)
 
-        # Supprimer la colonne temporaire de différence en jours
-        df = df.drop(columns=['Difference_Jours'])
+#         # Supprimer la colonne temporaire de différence en jours
+#         df = df.drop(columns=['Difference_Jours'])
 
-        return df
-
-
-    def afficher_histogramme_personnalise(base_name, colonne):
-        """
-        Affiche un graphique de barres horizontales représentant la distribution des professions.
-
-        Args:
-            base_name (pd.DataFrame): La base de données contenant les informations.
-            colonne_profession (str): Le nom de la colonne contenant les professions.
-            titre_graphique (str): Le titre du graphique.
-        """
-        if base_name.empty:
-            st.write("Aucune donnée disponible.")
-            return
-
-        # Calculer le nombre d'individus par profession
-        profession_counts = base_name[colonne].value_counts().reset_index()
-        profession_counts.columns = [colonne, 'Nombre']
-
-        # Calculer les pourcentages
-        total_individus = len(base_name)
-        if total_individus > 0:
-            profession_counts['Pourcentage'] = (profession_counts['Nombre'] / total_individus) * 100
-        else:
-            profession_counts['Pourcentage'] = 0
-
-        # Trier par pourcentage décroissant
-        profession_counts = profession_counts.sort_values(by='Pourcentage', ascending=False).reset_index(drop=True)
-
-        professions = profession_counts[colonne].tolist()
-        pourcentages = profession_counts['Pourcentage'].tolist()
-
-        fig = go.Figure()
-
-        for i in range(len(professions)):
-            profession = professions[i]
-            pourcentage = pourcentages[i]
-
-            fig.add_trace(go.Bar(
-                x=[pourcentage],
-                y=[profession],
-                orientation='h',
-                text=[f"{pourcentage:.2f}%"],
-                textposition='outside',
-                hovertemplate=f"<b>Profession</b>: {profession}<br>" +
-                            f"<b>Pourcentage</b>: {pourcentage:.2f}%<extra></extra>"
-            ))
-
-        fig.update_layout(
-            #title=titre_graphique,
-            xaxis=dict(range=[0, 100], ticksuffix='%', title=None),
-            yaxis=dict(showticklabels=True, title=None),
-            barmode='group',
-            showlegend=False,
-            margin=dict(l=200, r=20, t=40, b=20), # Marge gauche pour les professions potentiellement longues
-            plot_bgcolor='white',
-            paper_bgcolor='white'
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
+#         return df
 
 
-    def afficher_graphique_barres_polaire(base, colonne_profession):
-        """
-        Affiche un graphique à barres polaire interactif représentant la distribution des professions.
-        Au survol, affiche le nom de la modalité et le nombre.
-        Les barres sont tracées en fonction du pourcentage.
-        """
-        if base.empty:
-            st.write("Aucune donnée disponible.")
-            return
+#     def afficher_histogramme_personnalise(base_name, colonne):
+#         """
+#         Affiche un graphique de barres horizontales représentant la distribution des professions.
 
-        # Calculer le nombre d'individus par profession
-        profession_counts = base[colonne_profession].value_counts().reset_index()
-        profession_counts.columns = [colonne_profession, 'Nombre']
-        total_individus = profession_counts['Nombre'].sum()
-        profession_counts['Pourcentage'] = (profession_counts['Nombre'] / total_individus) * 100
-        profession_counts = profession_counts.sort_values(by='Pourcentage', ascending=False).reset_index(drop=True)
-        professions = profession_counts[colonne_profession].tolist()
-        pourcentages = profession_counts['Pourcentage'].tolist()
-        nombres = profession_counts['Nombre'].tolist()
+#         Args:
+#             base_name (pd.DataFrame): La base de données contenant les informations.
+#             colonne_profession (str): Le nom de la colonne contenant les professions.
+#             titre_graphique (str): Le titre du graphique.
+#         """
+#         if base_name.empty:
+#             st.write("Aucune donnée disponible.")
+#             return
 
-        fig = go.Figure(go.Barpolar(
-            r=pourcentages,
-            theta=np.linspace(0, 360, len(professions), endpoint=False).tolist(),
-            thetaunit='degrees',
-            name='Profession',
-            marker_color=px.colors.qualitative.Plotly * (len(professions) // len(px.colors.qualitative.Plotly) + 1),
-            hovertemplate='<b>%{theta}</b><br>Nombre: %{customdata}<br>Pourcentage: %{r:.2f}%<extra></extra>',
-            customdata=nombres,
-            text=professions, # Les noms des professions pour les labels
-            # textposition='outside' # Cette propriété n'est pas valide pour go.Barpolar
-        ))
+#         # Calculer le nombre d'individus par profession
+#         profession_counts = base_name[colonne].value_counts().reset_index()
+#         profession_counts.columns = [colonne, 'Nombre']
 
-        fig.update_layout(
-            polar=dict(
-                radialaxis=dict(
-                    visible=False,
-                    range=[0, max(pourcentages) * 1.2],
-                    tickformat='%', # Afficher les pourcentages sur l'axe radial
-                    #ticksuffix='%'
-                ),
-                angularaxis=dict(
-                    tickvals=np.linspace(0, 360, len(professions), endpoint=False).tolist(),
-                    ticktext=professions,
-                    direction='clockwise'
-                )
-            ),
-            title=f"Distribution des individus par profession",
-            showlegend=False,
-            width=750,
-            height=750
-        )
+#         # Calculer les pourcentages
+#         total_individus = len(base_name)
+#         if total_individus > 0:
+#             profession_counts['Pourcentage'] = (profession_counts['Nombre'] / total_individus) * 100
+#         else:
+#             profession_counts['Pourcentage'] = 0
 
-        st.plotly_chart(fig, use_container_width=True)
-    ## Recuperons la liste des donneurs eligibles au don
-    def afficher_pyramide_des_ages(df, colonne_age, colonne_genre):
-        """
-        Affiche une pyramide des âges des donneurs de sang par genre.
-        Les modalités de genre sont détectées automatiquement.
+#         # Trier par pourcentage décroissant
+#         profession_counts = profession_counts.sort_values(by='Pourcentage', ascending=False).reset_index(drop=True)
 
-        Args:
-            df (pd.DataFrame): La base de données des donneurs de sang.
-            colonne_age (str): Le nom de la colonne contenant l'âge des donneurs.
-            colonne_genre (str): Le nom de la colonne contenant le genre des donneurs.
-        """
-        if colonne_age not in df.columns:
-            st.error(f"La colonne '{colonne_age}' n'existe pas dans le DataFrame.")
-            return
-        if colonne_genre not in df.columns:
-            st.error(f"La colonne '{colonne_genre}' n'existe pas dans le DataFrame.")
-            return
+#         professions = profession_counts[colonne].tolist()
+#         pourcentages = profession_counts['Pourcentage'].tolist()
 
-        # Obtenir les modalités uniques de la colonne Genre
-        modalites_genre = df[colonne_genre].unique()
+#         fig = go.Figure()
 
-        # Identifier potentiellement le genre féminin et masculin (adapter si nécessaire)
-        genre_feminin = None
-        genre_masculin = None
+#         for i in range(len(professions)):
+#             profession = professions[i]
+#             pourcentage = pourcentages[i]
 
-        for modalite in modalites_genre:
-            modalite_lower = str(modalite).lower()
-            if 'femme' in modalite_lower or 'female' in modalite_lower or 'f' == modalite_lower:
-                if genre_feminin is None:  # Prend la première occurrence comme référence
-                    genre_feminin = modalite
-            elif 'homme' in modalite_lower or 'male' in modalite_lower or 'm' == modalite_lower:
-                if genre_masculin is None:  # Prend la première occurrence comme référence
-                    genre_masculin = modalite
+#             fig.add_trace(go.Bar(
+#                 x=[pourcentage],
+#                 y=[profession],
+#                 orientation='h',
+#                 text=[f"{pourcentage:.2f}%"],
+#                 textposition='outside',
+#                 hovertemplate=f"<b>Profession</b>: {profession}<br>" +
+#                             f"<b>Pourcentage</b>: {pourcentage:.2f}%<extra></extra>"
+#             ))
 
-        if genre_feminin is None or genre_masculin is None:
-            st.warning(
-                f"Impossible d'identifier automatiquement les genres féminin et masculin "
-                f"dans la colonne '{colonne_genre}'. Veuillez vérifier les données. "
-                f"Modalités trouvées : {', '.join(map(str, modalites_genre))}"
-            )
-            return
+#         fig.update_layout(
+#             #title=titre_graphique,
+#             xaxis=dict(range=[0, 100], ticksuffix='%', title=None),
+#             yaxis=dict(showticklabels=True, title=None),
+#             barmode='group',
+#             showlegend=False,
+#             margin=dict(l=200, r=20, t=40, b=20), # Marge gauche pour les professions potentiellement longues
+#             plot_bgcolor='white',
+#             paper_bgcolor='white'
+#         )
 
-        # Créer des groupes d'âge
-        bins = list(range(0, df[colonne_age].max() + 6, 5))
-        labels = [f'{i}-{i+4}' for i in bins[:-1]]
-        df['Groupe_Age'] = pd.cut(df[colonne_age], bins=bins, labels=labels, right=False)
+#         st.plotly_chart(fig, use_container_width=True)
 
-        # Calculer la distribution des âges par genre
-        age_distribution = df.groupby(['Groupe_Age', colonne_genre]).size().unstack(fill_value=0)
 
-        # Créer la figure Plotly
-        fig = go.Figure()
+#     def afficher_graphique_barres_polaire(base, colonne_profession):
+#         """
+#         Affiche un graphique à barres polaire interactif représentant la distribution des professions.
+#         Au survol, affiche le nom de la modalité et le nombre.
+#         Les barres sont tracées en fonction du pourcentage.
+#         """
+#         if base.empty:
+#             st.write("Aucune donnée disponible.")
+#             return
 
-        # Ajouter la distribution masculine
-        if genre_masculin in age_distribution.columns:
-            fig.add_trace(go.Bar(
-                y=age_distribution.index,
-                x=age_distribution[genre_masculin],
-                orientation='h',
-                name=str(genre_masculin).capitalize(),
-                marker_color='skyblue'
-            ))
+#         # Calculer le nombre d'individus par profession
+#         profession_counts = base[colonne_profession].value_counts().reset_index()
+#         profession_counts.columns = [colonne_profession, 'Nombre']
+#         total_individus = profession_counts['Nombre'].sum()
+#         profession_counts['Pourcentage'] = (profession_counts['Nombre'] / total_individus) * 100
+#         profession_counts = profession_counts.sort_values(by='Pourcentage', ascending=False).reset_index(drop=True)
+#         professions = profession_counts[colonne_profession].tolist()
+#         pourcentages = profession_counts['Pourcentage'].tolist()
+#         nombres = profession_counts['Nombre'].tolist()
 
-        # Ajouter la distribution féminine
-        if genre_feminin in age_distribution.columns:
-            fig.add_trace(go.Bar(
-                y=age_distribution.index,
-                x=-age_distribution[genre_feminin],
-                orientation='h',
-                name=str(genre_feminin).capitalize(),
-                marker_color='salmon'
-            ))
+#         fig = go.Figure(go.Barpolar(
+#             r=pourcentages,
+#             theta=np.linspace(0, 360, len(professions), endpoint=False).tolist(),
+#             thetaunit='degrees',
+#             name='Profession',
+#             marker_color=px.colors.qualitative.Plotly * (len(professions) // len(px.colors.qualitative.Plotly) + 1),
+#             hovertemplate='<b>%{theta}</b><br>Nombre: %{customdata}<br>Pourcentage: %{r:.2f}%<extra></extra>',
+#             customdata=nombres,
+#             text=professions, # Les noms des professions pour les labels
+#             # textposition='outside' # Cette propriété n'est pas valide pour go.Barpolar
+#         ))
 
-        # Mettre à jour le layout
-        fig.update_layout(
-            title='Pyramide des Âges des Donneurs de Sang par Genre',
-            yaxis_title='Groupe d\'Âge',
-            xaxis_title='Nombre de Donneurs',
-            barmode='relative',
-            xaxis=dict(tickformat='|f', title_standoff=25),
-            bargap=0.2
-        )
+#         fig.update_layout(
+#             polar=dict(
+#                 radialaxis=dict(
+#                     visible=False,
+#                     range=[0, max(pourcentages) * 1.2],
+#                     tickformat='%', # Afficher les pourcentages sur l'axe radial
+#                     #ticksuffix='%'
+#                 ),
+#                 angularaxis=dict(
+#                     tickvals=np.linspace(0, 360, len(professions), endpoint=False).tolist(),
+#                     ticktext=professions,
+#                     direction='clockwise'
+#                 )
+#             ),
+#             title=f"Distribution des individus par profession",
+#             showlegend=False,
+#             width=750,
+#             height=750
+#         )
 
-        # Afficher la figure dans Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+#         st.plotly_chart(fig, use_container_width=True)
+#     ## Recuperons la liste des donneurs eligibles au don
+#     def afficher_pyramide_des_ages(df, colonne_age, colonne_genre):
+#         """
+#         Affiche une pyramide des âges des donneurs de sang par genre.
+#         Les modalités de genre sont détectées automatiquement.
 
-    base=df[df["ÉLIGIBILITÉ AU DON."]=="Eligible"]
+#         Args:
+#             df (pd.DataFrame): La base de données des donneurs de sang.
+#             colonne_age (str): Le nom de la colonne contenant l'âge des donneurs.
+#             colonne_genre (str): Le nom de la colonne contenant le genre des donneurs.
+#         """
+#         if colonne_age not in df.columns:
+#             st.error(f"La colonne '{colonne_age}' n'existe pas dans le DataFrame.")
+#             return
+#         if colonne_genre not in df.columns:
+#             st.error(f"La colonne '{colonne_genre}' n'existe pas dans le DataFrame.")
+#             return
 
-    st.sidebar.write("## Navigation")
-    st.sidebar.write("Aller ")
-    with st.sidebar:
-        Arron = base["Arrondissement de résidence"].unique()
-        Arron_selectionne = st.sidebar.multiselect(
-            "Choisissez l'Arrondissement:", options=Arron, default=Arron[0] if len(Arron) > 0 else None
-        )
+#         # Obtenir les modalités uniques de la colonne Genre
+#         modalites_genre = df[colonne_genre].unique()
 
-        base_arron = base[base['Arrondissement de résidence'].isin(Arron_selectionne)]
-        Quartier_selectionne = []  # Initialisation pour éviter les erreurs si aucun arrondissement n'est sélectionné
-        base_Quartier = base_arron # Initialisation pour éviter les erreurs si aucun arrondissement n'est sélectionné
+#         # Identifier potentiellement le genre féminin et masculin (adapter si nécessaire)
+#         genre_feminin = None
+#         genre_masculin = None
 
-        if not Arron_selectionne:
-            st.sidebar.warning("Veuillez choisir au moins un arrondissement.")
-        #else:
+#         for modalite in modalites_genre:
+#             modalite_lower = str(modalite).lower()
+#             if 'femme' in modalite_lower or 'female' in modalite_lower or 'f' == modalite_lower:
+#                 if genre_feminin is None:  # Prend la première occurrence comme référence
+#                     genre_feminin = modalite
+#             elif 'homme' in modalite_lower or 'male' in modalite_lower or 'm' == modalite_lower:
+#                 if genre_masculin is None:  # Prend la première occurrence comme référence
+#                     genre_masculin = modalite
+
+#         if genre_feminin is None or genre_masculin is None:
+#             st.warning(
+#                 f"Impossible d'identifier automatiquement les genres féminin et masculin "
+#                 f"dans la colonne '{colonne_genre}'. Veuillez vérifier les données. "
+#                 f"Modalités trouvées : {', '.join(map(str, modalites_genre))}"
+#             )
+#             return
+
+#         # Créer des groupes d'âge
+#         bins = list(range(0, df[colonne_age].max() + 6, 5))
+#         labels = [f'{i}-{i+4}' for i in bins[:-1]]
+#         df['Groupe_Age'] = pd.cut(df[colonne_age], bins=bins, labels=labels, right=False)
+
+#         # Calculer la distribution des âges par genre
+#         age_distribution = df.groupby(['Groupe_Age', colonne_genre]).size().unstack(fill_value=0)
+
+#         # Créer la figure Plotly
+#         fig = go.Figure()
+
+#         # Ajouter la distribution masculine
+#         if genre_masculin in age_distribution.columns:
+#             fig.add_trace(go.Bar(
+#                 y=age_distribution.index,
+#                 x=age_distribution[genre_masculin],
+#                 orientation='h',
+#                 name=str(genre_masculin).capitalize(),
+#                 marker_color='skyblue'
+#             ))
+
+#         # Ajouter la distribution féminine
+#         if genre_feminin in age_distribution.columns:
+#             fig.add_trace(go.Bar(
+#                 y=age_distribution.index,
+#                 x=-age_distribution[genre_feminin],
+#                 orientation='h',
+#                 name=str(genre_feminin).capitalize(),
+#                 marker_color='salmon'
+#             ))
+
+#         # Mettre à jour le layout
+#         fig.update_layout(
+#             title='Pyramide des Âges des Donneurs de Sang par Genre',
+#             yaxis_title='Groupe d\'Âge',
+#             xaxis_title='Nombre de Donneurs',
+#             barmode='relative',
+#             xaxis=dict(tickformat='|f', title_standoff=25),
+#             bargap=0.2
+#         )
+
+#         # Afficher la figure dans Streamlit
+#         st.plotly_chart(fig, use_container_width=True)
+
+#     base=df[df["ÉLIGIBILITÉ AU DON."]=="Eligible"]
+
+#     st.sidebar.write("## Navigation")
+#     st.sidebar.write("Aller ")
+#     with st.sidebar:
+#         Arron = base["Arrondissement de résidence"].unique()
+#         Arron_selectionne = st.sidebar.multiselect(
+#             "Choisissez l'Arrondissement:", options=Arron, default=Arron[0] if len(Arron) > 0 else None
+#         )
+
+#         base_arron = base[base['Arrondissement de résidence'].isin(Arron_selectionne)]
+#         Quartier_selectionne = []  # Initialisation pour éviter les erreurs si aucun arrondissement n'est sélectionné
+#         base_Quartier = base_arron # Initialisation pour éviter les erreurs si aucun arrondissement n'est sélectionné
+
+#         if not Arron_selectionne:
+#             st.sidebar.warning("Veuillez choisir au moins un arrondissement.")
+#         #else:
         
-    # Quartier = base_arron["Quartier de Résidence"].unique()
-        #Quartier_selectionne = st.multiselect(
-        #  "Choisissez le Quartier:", options=Quartier, default=Quartier if len(Quartier) > 0 else None
-        #)
-        #if not Quartier_selectionne:
-        # st.sidebar.warning("Veuillez choisir au moins un quartier après avoir sélectionné un arrondissement.")
-        #else:
-        # base_Quartier = base_arron[base_arron["Quartier de Résidence"].isin(Quartier_selectionne)]
+#     # Quartier = base_arron["Quartier de Résidence"].unique()
+#         #Quartier_selectionne = st.multiselect(
+#         #  "Choisissez le Quartier:", options=Quartier, default=Quartier if len(Quartier) > 0 else None
+#         #)
+#         #if not Quartier_selectionne:
+#         # st.sidebar.warning("Veuillez choisir au moins un quartier après avoir sélectionné un arrondissement.")
+#         #else:
+#         # base_Quartier = base_arron[base_arron["Quartier de Résidence"].isin(Quartier_selectionne)]
 
-    # Préparer les données pour les graphiques
-    # Utilisez 'base_Quartier' pour vos analyses et graphiques car il contient les données filtrées
-    if not Arron_selectionne:
-        st.warning("Veuillez choisir au moins un arrondissement dans la barre latérale pour afficher les données.")
-    #elif not Quartier_selectionne:
-        #st.warning("Veuillez choisir au moins un quartier dans la barre latérale pour afficher les données.")
+#     # Préparer les données pour les graphiques
+#     # Utilisez 'base_Quartier' pour vos analyses et graphiques car il contient les données filtrées
+#     if not Arron_selectionne:
+#         st.warning("Veuillez choisir au moins un arrondissement dans la barre latérale pour afficher les données.")
+#     #elif not Quartier_selectionne:
+#         #st.warning("Veuillez choisir au moins un quartier dans la barre latérale pour afficher les données.")
 
-    # Préparer les données pour les graphiques
-    # Fonction pour préparer les données
+#     # Préparer les données pour les graphiques
+#     # Fonction pour préparer les données
 
-    else:
+#     else:
 
-        # Calculer les indicateurs
-        base_age=calculer_age_au_don(base_Quartier, 'Date de remplissage de la fiche', 'Date de naissance', 'Age_Don')
-        nombre_individus = len(base_Quartier)
+#         # Calculer les indicateurs
+#         base_age=calculer_age_au_don(base_Quartier, 'Date de remplissage de la fiche', 'Date de naissance', 'Age_Don')
+#         nombre_individus = len(base_Quartier)
         
-        age_moyen = base_age["Age_Don"].mean().round(1) if 'Age_Don' in base_age.columns else None
-        hemoglobine_moyenne = base_age['Taux d’hémoglobine'].mean().round(1) if "Taux d’hémoglobine" in base_age.columns else None
+#         age_moyen = base_age["Age_Don"].mean().round(1) if 'Age_Don' in base_age.columns else None
+#         hemoglobine_moyenne = base_age['Taux d’hémoglobine'].mean().round(1) if "Taux d’hémoglobine" in base_age.columns else None
 
-        # --- Affichage des indicateurs dans des colonnes avec le style personnalisé ---
-        col1, col2, col3 = st.columns(3)
+#         # --- Affichage des indicateurs dans des colonnes avec le style personnalisé ---
+#         col1, col2, col3 = st.columns(3)
 
-        with col1:
-            st.markdown(f"""
-                <div class='indicator-container'>
-                    <div class='indicator-title'>Nombre d'Individus réguliers</div>
-                    <div class='indicator-value'>{nombre_individus}</div>
-                </div>
-            """, unsafe_allow_html=True)
+#         with col1:
+#             st.markdown(f"""
+#                 <div class='indicator-container'>
+#                     <div class='indicator-title'>Nombre d'Individus réguliers</div>
+#                     <div class='indicator-value'>{nombre_individus}</div>
+#                 </div>
+#             """, unsafe_allow_html=True)
 
-        with col2:
-            st.markdown(f"""
-                <div class='indicator-container'>
-                    <div class='indicator-title'>Âge Moyen</div>
-                    <div class='indicator-value'>{age_moyen if age_moyen is not None else 'N/A'}</div>
-                    <div class='indicator-unit'>ans</div>
-                </div>
-            """, unsafe_allow_html=True)
-            if age_moyen is None:
-                st.warning(f"Colonne 'Age_Don' non trouvée pour calculer l'âge moyen.")
+#         with col2:
+#             st.markdown(f"""
+#                 <div class='indicator-container'>
+#                     <div class='indicator-title'>Âge Moyen</div>
+#                     <div class='indicator-value'>{age_moyen if age_moyen is not None else 'N/A'}</div>
+#                     <div class='indicator-unit'>ans</div>
+#                 </div>
+#             """, unsafe_allow_html=True)
+#             if age_moyen is None:
+#                 st.warning(f"Colonne 'Age_Don' non trouvée pour calculer l'âge moyen.")
 
-        with col3:
-            st.markdown(f"""
-                <div class='indicator-container'>
-                    <div class='indicator-title'>Taux d'Hémoglobine Moyen</div>
-                    <div class='indicator-value'>{hemoglobine_moyenne if hemoglobine_moyenne is not None else 'N/A'}</div>
-                    <div class='indicator-unit'>g/dL</div>
-                </div>
-            """, unsafe_allow_html=True)
-            if hemoglobine_moyenne is None:
-                st.warning(f"Colonne 'Taux d’hémoglobine' non trouvée pour calculer le taux d'hémoglobine moyen.")
-        ## Définissons une colonne classe d"âge :
-        base_class_age=creer_classe_age_amplitude_egale(base_age, 'Age_Don','Classe_Age', n_classes=5)
-        app_streamlit(base_class_age,key_suffix="Selon les arronidssents choisis")
-        ## Pyramide des âge des donneurs reguliers
-        afficher_pyramide_des_ages(base_age, "Age_Don", "Genre")
+#         with col3:
+#             st.markdown(f"""
+#                 <div class='indicator-container'>
+#                     <div class='indicator-title'>Taux d'Hémoglobine Moyen</div>
+#                     <div class='indicator-value'>{hemoglobine_moyenne if hemoglobine_moyenne is not None else 'N/A'}</div>
+#                     <div class='indicator-unit'>g/dL</div>
+#                 </div>
+#             """, unsafe_allow_html=True)
+#             if hemoglobine_moyenne is None:
+#                 st.warning(f"Colonne 'Taux d’hémoglobine' non trouvée pour calculer le taux d'hémoglobine moyen.")
+#         ## Définissons une colonne classe d"âge :
+#         base_class_age=creer_classe_age_amplitude_egale(base_age, 'Age_Don','Classe_Age', n_classes=5)
+#         app_streamlit(base_class_age,key_suffix="Selon les arronidssents choisis")
+#         ## Pyramide des âge des donneurs reguliers
+#         afficher_pyramide_des_ages(base_age, "Age_Don", "Genre")
 
-        def prepare_chart_data(df, column):
-            count_data = df[column].value_counts(normalize=True) * 100
-            return count_data.index.tolist(), count_data.values.tolist()
-        variables_to_plot = [
-            "Niveau d'etude", "Genre", "Situation Matrimoniale (SM)", "ÉLIGIBILITÉ AU DON.","Nationalité","Religion"
-        ]
-        chart_data = {}
-        for col in variables_to_plot:
-            if col in base.columns:
-                chart_data[col] = prepare_chart_data(base, col)
+#         def prepare_chart_data(df, column):
+#             count_data = df[column].value_counts(normalize=True) * 100
+#             return count_data.index.tolist(), count_data.values.tolist()
+#         variables_to_plot = [
+#             "Niveau d'etude", "Genre", "Situation Matrimoniale (SM)", "ÉLIGIBILITÉ AU DON.","Nationalité","Religion"
+#         ]
+#         chart_data = {}
+#         for col in variables_to_plot:
+#             if col in base.columns:
+#                 chart_data[col] = prepare_chart_data(base, col)
 
 
         
 
-        class_age=base_class_age["Classe_Age"].unique()
-        age_selectionne=st.multiselect("choisissez une tranche d'age", options=class_age, default=class_age)
-        if age_selectionne:
-            base_age_filtre=base_class_age[base_class_age["Classe_Age"].isin(age_selectionne)]
-            chart_data = {}
-            for col in variables_to_plot:
-                if col in base.columns:
-                    chart_data[col] = prepare_chart_data(base_age_filtre, col)
+#         class_age=base_class_age["Classe_Age"].unique()
+#         age_selectionne=st.multiselect("choisissez une tranche d'age", options=class_age, default=class_age)
+#         if age_selectionne:
+#             base_age_filtre=base_class_age[base_class_age["Classe_Age"].isin(age_selectionne)]
+#             chart_data = {}
+#             for col in variables_to_plot:
+#                 if col in base.columns:
+#                     chart_data[col] = prepare_chart_data(base_age_filtre, col)
 
-            ## Divisons la page en deux colonne
-            st.markdown("<h3 style='text-align: center;'>Situation Matrimoniale (SM)</h3>", unsafe_allow_html=True)
-            colonne1,colonne2 = st.columns(2)
-            with colonne1:
-                    if "Situation Matrimoniale (SM)" in chart_data:
-                        #st.markdown("<h4 style='color: green; text-align: center;'>Situation Matrimoniale</h4>", unsafe_allow_html=True)
-                        st.plotly_chart(create_donut_chart(*chart_data["Situation Matrimoniale (SM)"], "Situation Matrimoniale"), use_container_width=True)
+#             ## Divisons la page en deux colonne
+#             st.markdown("<h3 style='text-align: center;'>Situation Matrimoniale (SM)</h3>", unsafe_allow_html=True)
+#             colonne1,colonne2 = st.columns(2)
+#             with colonne1:
+#                     if "Situation Matrimoniale (SM)" in chart_data:
+#                         #st.markdown("<h4 style='color: green; text-align: center;'>Situation Matrimoniale</h4>", unsafe_allow_html=True)
+#                         st.plotly_chart(create_donut_chart(*chart_data["Situation Matrimoniale (SM)"], "Situation Matrimoniale"), use_container_width=True)
 
-            with colonne2:
-                with st.container():                   
-                    Nationali_type_counts =base_age_filtre["Situation Matrimoniale (SM)"].value_counts()
+#             with colonne2:
+#                 with st.container():                   
+#                     Nationali_type_counts =base_age_filtre["Situation Matrimoniale (SM)"].value_counts()
                     
-                    # Affichage en 2 colonnes
-                    #b_col1, b_col2 = st.columns(2)
+#                     # Affichage en 2 colonnes
+#                     #b_col1, b_col2 = st.columns(2)
                     
-                    for i, (blood_type, count) in enumerate( Nationali_type_counts.items()):
-                        #if i % 2 == 0:
-                            #with b_col1:
-                                st.metric(blood_type, count)
-                        #else:
-                            #with b_col2:
-                                #st.metric(blood_type, count)
+#                     for i, (blood_type, count) in enumerate( Nationali_type_counts.items()):
+#                         #if i % 2 == 0:
+#                             #with b_col1:
+#                                 st.metric(blood_type, count)
+#                         #else:
+#                             #with b_col2:
+#                                 #st.metric(blood_type, count)
 
-            col = st.columns(3)
-            with col[0]:
+#             col = st.columns(3)
+#             with col[0]:
 
-                    if "Nationalité" in chart_data:
-                        st.plotly_chart(create_donut_chart(*chart_data["Nationalité"], "Selon la Nationalité"), use_container_width=True)
+#                     if "Nationalité" in chart_data:
+#                         st.plotly_chart(create_donut_chart(*chart_data["Nationalité"], "Selon la Nationalité"), use_container_width=True)
                     
-            with col[1]:
-                    if "Genre" in chart_data:
-                        #st.markdown("<h4 style='color: green; text-align: center;'>Genre</h4>", unsafe_allow_html=True)
-                        st.plotly_chart(create_donut_chart(*chart_data["Genre"], "Selon le Genre"), use_container_width=True)
-            with col[2]:
-                    if "Religion" in chart_data:
-                        #st.markdown("<h4 style='color: green; text-align: center;'>Genre</h4>", unsafe_allow_html=True)
-                        st.plotly_chart(create_donut_chart(*chart_data["Religion"], "Selon la Religion"), use_container_width=True)
-            ##  Création de la colonne classe d'âge
+#             with col[1]:
+#                     if "Genre" in chart_data:
+#                         #st.markdown("<h4 style='color: green; text-align: center;'>Genre</h4>", unsafe_allow_html=True)
+#                         st.plotly_chart(create_donut_chart(*chart_data["Genre"], "Selon le Genre"), use_container_width=True)
+#             with col[2]:
+#                     if "Religion" in chart_data:
+#                         #st.markdown("<h4 style='color: green; text-align: center;'>Genre</h4>", unsafe_allow_html=True)
+#                         st.plotly_chart(create_donut_chart(*chart_data["Religion"], "Selon la Religion"), use_container_width=True)
+#             ##  Création de la colonne classe d'âge
             
 
-            with st.container():
-                    #st.header("Proffession")
-                    #afficher_histogramme(base,'Profession')
-                    Genre_selectionne = [] 
-                    Genre=base_Quartier["Genre"].unique()
-                    Genre_selectionne = st.multiselect(
-            "Choisissez le Sexe:", options=Genre, default=Genre if len(Genre) > 0 else None
-        )
-                    base_Genre = base_age_filtre[base_age_filtre['Genre'].isin(Genre_selectionne)]
-                    # Initialisation pour éviter les erreurs si aucun Genre n'est sélectionné
-                    st.markdown(
-                        """
-                        <style>
-                            /* Cibler la zone d'affichage des éléments sélectionnés (l'intérieur) */
-                            .stMultiSelect > div:first-child {
-                                background-color: #FF0000 !important; /* Remplacez par le rouge de Stata ou une couleur similaire */
-                                border: 1px solid #ccc;
-                                border-radius: 3px;
-                                padding: 5px;
-                                cursor: pointer;
-                                color: white !important; /* Assurez-vous que le texte est lisible sur le fond rouge */
-                            }
+#             with st.container():
+#                     #st.header("Proffession")
+#                     #afficher_histogramme(base,'Profession')
+#                     Genre_selectionne = [] 
+#                     Genre=base_Quartier["Genre"].unique()
+#                     Genre_selectionne = st.multiselect(
+#             "Choisissez le Sexe:", options=Genre, default=Genre if len(Genre) > 0 else None
+#         )
+#                     base_Genre = base_age_filtre[base_age_filtre['Genre'].isin(Genre_selectionne)]
+#                     # Initialisation pour éviter les erreurs si aucun Genre n'est sélectionné
+#                     st.markdown(
+#                         """
+#                         <style>
+#                             /* Cibler la zone d'affichage des éléments sélectionnés (l'intérieur) */
+#                             .stMultiSelect > div:first-child {
+#                                 background-color: #FF0000 !important; /* Remplacez par le rouge de Stata ou une couleur similaire */
+#                                 border: 1px solid #ccc;
+#                                 border-radius: 3px;
+#                                 padding: 5px;
+#                                 cursor: pointer;
+#                                 color: white !important; /* Assurez-vous que le texte est lisible sur le fond rouge */
+#                             }
 
-                            /* Cibler les badges des options sélectionnées (facultatif) */
-                            .stMultiSelect > div:first-child div[data-baseweb="tag"] {
-                                background-color: white; /* Couleur claire pour les badges sur fond rouge */
-                                color: black;
-                                border-radius: 3px;
-                                padding: 2px 5px;
-                                margin-right: 2px;
-                            }
+#                             /* Cibler les badges des options sélectionnées (facultatif) */
+#                             .stMultiSelect > div:first-child div[data-baseweb="tag"] {
+#                                 background-color: white; /* Couleur claire pour les badges sur fond rouge */
+#                                 color: black;
+#                                 border-radius: 3px;
+#                                 padding: 2px 5px;
+#                                 margin-right: 2px;
+#                             }
 
-                        </style>
-                        """,
-                        unsafe_allow_html=True,
-                    )
+#                         </style>
+#                         """,
+#                         unsafe_allow_html=True,
+#                     )
 
-                    if not Genre_selectionne:
-                        st.sidebar.warning("Veuillez choisir le Genre.")
-                    else:
-                            #afficher_histogramme_personnalise(base_Genre, "Niveau d'etude","selon Niveau d'étude")
-                        st.markdown("<h3 style='text-align: center;'>Selon le niveau d'étude</h3>", unsafe_allow_html=True)
-                        colonne1,colonne2 = st.columns(2)
-                        with colonne1:
-                                afficher_diagramme_en_anneau(base_Genre, "Niveau d'etude")
-                        with colonne2:
-                            with st.container():                   
-                                Nationali_type_counts =base_Genre["Niveau d'etude"].value_counts()
+#                     if not Genre_selectionne:
+#                         st.sidebar.warning("Veuillez choisir le Genre.")
+#                     else:
+#                             #afficher_histogramme_personnalise(base_Genre, "Niveau d'etude","selon Niveau d'étude")
+#                         st.markdown("<h3 style='text-align: center;'>Selon le niveau d'étude</h3>", unsafe_allow_html=True)
+#                         colonne1,colonne2 = st.columns(2)
+#                         with colonne1:
+#                                 afficher_diagramme_en_anneau(base_Genre, "Niveau d'etude")
+#                         with colonne2:
+#                             with st.container():                   
+#                                 Nationali_type_counts =base_Genre["Niveau d'etude"].value_counts()
                                 
-                                # Affichage en 2 colonnes
-                                b_col1, b_col2 = st.columns(2)
+#                                 # Affichage en 2 colonnes
+#                                 b_col1, b_col2 = st.columns(2)
                                 
-                                for i, (blood_type, count) in enumerate( Nationali_type_counts.items()):
-                                    if i % 2 == 0:
-                                        with b_col1:
-                                            st.metric(blood_type, count)
-                                    else:
-                                        with b_col2:
-                                            st.metric(blood_type, count)
+#                                 for i, (blood_type, count) in enumerate( Nationali_type_counts.items()):
+#                                     if i % 2 == 0:
+#                                         with b_col1:
+#                                             st.metric(blood_type, count)
+#                                     else:
+#                                         with b_col2:
+#                                             st.metric(blood_type, count)
 
-                        ##Visualisons les proffessions des donneurs réguliers
+#                         ##Visualisons les proffessions des donneurs réguliers
 
-                        afficher_graphique_barres_polaire(base_Genre, 'Profession')
-                        #"#visualisons les périodes de don de sang
+#                         afficher_graphique_barres_polaire(base_Genre, 'Profession')
+#                         #"#visualisons les périodes de don de sang
 
-                        periode=["jour", "mois"]
-                        periode_select=st.selectbox("Choisir la période ", periode)
-                        visualiser_dons_par_periode(base_age_filtre,"Date de remplissage de la fiche",periode_select)
+#                         periode=["jour", "mois"]
+#                         periode_select=st.selectbox("Choisir la période ", periode)
+#                         visualiser_dons_par_periode(base_age_filtre,"Date de remplissage de la fiche",periode_select)
 
                         
 
                         
 
                     
-                        #app_streamlit(base_age_filtre,key_suffix="")
+#                         #app_streamlit(base_age_filtre,key_suffix="")
 
 
-                        #afficher_arbre_donneur_ideal_top2(base_age_filtre, ["Genre","Profession","Classe_Age"])
-        else:
-            st.write("Veuillez choisir au moins une tranche d'age ")
-            # Ajout de styles CSS pour améliorer l'apparence
+#                         #afficher_arbre_donneur_ideal_top2(base_age_filtre, ["Genre","Profession","Classe_Age"])
+#         else:
+#             st.write("Veuillez choisir au moins une tranche d'age ")
+#             # Ajout de styles CSS pour améliorer l'apparence
 
-    st.markdown("""
-        <style>
-            /* Centrage du texte */
-            .css-1v3fvcr { text-align: center !important; }
+#     st.markdown("""
+#         <style>
+#             /* Centrage du texte */
+#             .css-1v3fvcr { text-align: center !important; }
 
-            /* Style des graphiques Plotly */
-            .stPlotlyChart {
-                background-color: #D6EAF8; /* Couleur douce de fond */
-                border: 3px solid #C0392B; /* 🔴 contour rouge sang */
-                box-shadow: 5px 5px 15px rgba(192, 57, 43, 0.4); /* ombre rouge */
-                border-radius: 10px;
-                padding: 10px;
-            }
+#             /* Style des graphiques Plotly */
+#             .stPlotlyChart {
+#                 background-color: #D6EAF8; /* Couleur douce de fond */
+#                 border: 3px solid #C0392B; /* 🔴 contour rouge sang */
+#                 box-shadow: 5px 5px 15px rgba(192, 57, 43, 0.4); /* ombre rouge */
+#                 border-radius: 10px;
+#                 padding: 10px;
+#             }
 
-            h4 {
-                font-weight: bold;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-"""
+#             h4 {
+#                 font-weight: bold;
+#             }
+#         </style>
+#     """, unsafe_allow_html=True)
+# """
 
 
 
