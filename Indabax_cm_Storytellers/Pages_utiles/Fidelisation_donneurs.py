@@ -842,7 +842,7 @@ def page_fidelisation():
         modalites_genre = df[colonne_genre].unique()
 
         # Identifier potentiellement le genre féminin et masculin (adapter si nécessaire)
-        genre_feminin = None
+        genre_feminin = "femme"#None
         genre_masculin = None
 
         for modalite in modalites_genre:
