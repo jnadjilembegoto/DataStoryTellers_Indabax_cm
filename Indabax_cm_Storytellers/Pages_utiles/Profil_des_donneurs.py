@@ -931,8 +931,8 @@ def page_profil_load():
             chart_data[col] = prepare_chart_data(df, col)
 
 
-    st.sidebar.write("## Navigation")
-    st.sidebar.write("Aller ")
+    # st.sidebar.write("## Navigation")
+    # st.sidebar.write("Aller ")
     titres_onglets = ["Caractéristiques Démographiques des donneurs", "Caractéristiques Biologiques des donneurs","Par cluster"]
     onglets_selectionnee=st.sidebar.radio("Forme d'analyse",titres_onglets)
     if onglets_selectionnee=="Caractéristiques Démographiques des donneurs":
