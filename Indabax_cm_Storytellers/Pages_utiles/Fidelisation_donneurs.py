@@ -905,7 +905,7 @@ def page_fidelisation():
         )
 
         # Afficher la figure dans Streamlit
-        st.plotly_chart(fig, use_container_width=False)
+        st.plotly_chart(fig)#, use_container_width=False
 
     base=df[df["ÉLIGIBILITÉ AU DON."]=="Eligible"]
 
