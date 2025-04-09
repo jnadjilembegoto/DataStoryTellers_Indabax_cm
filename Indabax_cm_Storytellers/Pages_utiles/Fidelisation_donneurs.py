@@ -901,7 +901,6 @@ def page_fidelisation():
             xaxis_title='Nombre de Donneurs',
             barmode='relative',
             xaxis=dict(tickformat='|f', title_standoff=25),
-            height=600,  
             bargap=0.2
         )
 
