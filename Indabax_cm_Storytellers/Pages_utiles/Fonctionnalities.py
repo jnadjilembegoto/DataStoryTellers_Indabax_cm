@@ -104,8 +104,8 @@ def fonctionnalities_load():
             st.metric("✅ Eligibles au don de sang", f"{nb_elig} Personnes")
 
     
-    with st.container():
-        st.subheader("🔵 Evolution du nombre des participants à la campagne")
+    #with st.container():
+        #st.subheader("🔵 Evolution du nombre des participants à la campagne")
                     
                     # Compter les occurrences de chaque date  
         """occurrences = filtered_df['Date de remplissage de la fiche'].value_counts().sort_index()  
