@@ -452,7 +452,7 @@ def page_fidelisation():
         if periode == 'jour':
             # Extraire le jour de la semaine
             df['Periode'] = df[colonne_date].dt.strftime('%A')#dt.day_name(locale='fr_FR')
-            periode_ordre = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  #['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+            periode_ordre = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']#['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']  #
             titre_nombre = 'Nombre de dons de sang par jour de la semaine'
             titre_proportion = 'Proportion des dons de sang par jour de la semaine'
             label_axe = 'Jour de la semaine'
@@ -460,7 +460,7 @@ def page_fidelisation():
         elif periode == 'mois':
             # Extraire le mois
             df['Periode'] = df[colonne_date].dt.strftime('%B')#dt.month_name(locale='fr_FR')
-            periode_ordre = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December']  #['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin','Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+            periode_ordre = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin','Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']#['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December']  #
             titre_nombre = 'Nombre de dons de sang par mois'
             titre_proportion = 'Proportion des dons de sang par mois'
             label_axe = 'Mois'
