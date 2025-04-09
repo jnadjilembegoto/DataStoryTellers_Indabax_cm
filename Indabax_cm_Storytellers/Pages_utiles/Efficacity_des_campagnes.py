@@ -563,7 +563,7 @@ def visualiser_dons_par_periode(df, colonne_date, periode):
         st.error(f"Impossible de convertir la colonne '{colonne_date}' en format datetime. Veuillez vérifier le format des dates.")
         return
     # Paramétrage de la locale  
-    locale.setlocale(locale.LC_TIME, 'fr_FR')
+    #locale.setlocale(locale.LC_TIME, 'fr_FR')
     if periode == 'jour':
         # Extraire le jour de la semaine
         df['Periode'] = df[colonne_date].dt.strftime('%A') #day_name(locale='fr_FR')
@@ -574,7 +574,7 @@ def visualiser_dons_par_periode(df, colonne_date, periode):
         df['Periode'] = pd.Categorical(df['Periode'], categories=periode_ordre, ordered=True)
     elif periode == 'mois':
         # Extraire le mois
-        df['Periode'] = df[colonne_date].dt.month_name(locale='fr_FR')
+        df['Periode'] = df[colonne_date].dt.strftime('%B')#month_name(locale='fr_FR')
         periode_ordre = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
                         'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
         titre_nombre = 'Nombre de dons de sang par mois'
