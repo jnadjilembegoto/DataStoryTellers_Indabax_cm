@@ -14,6 +14,9 @@ from streamlit_echarts import st_echarts
 from Datas.data_link import data_dir
 path = data_dir('base_streamlit_storytellers.xlsx')
 data = pd.read_excel(path, sheet_name='year')
+df_donn=data[data["A-t-il (elle) déjà donné le sang"]=='Oui']
+
+df=df_donn.copy()
 
 def page_fidelisation():
     # --- CONTENU PRINCIPAL DE L'APPLICATION ---
@@ -239,9 +242,7 @@ def page_fidelisation():
 
     ##  Recuperons la base des personnes ayant données le sang à plusieurs réprises
 
-    df_donn=data[data["A-t-il (elle) déjà donné le sang"]=='Oui']
-
-    df=df_donn.copy()
+    
 
 
     st.markdown("""
@@ -842,7 +843,7 @@ def page_fidelisation():
         modalites_genre = df[colonne_genre].unique()
 
         # Identifier potentiellement le genre féminin et masculin (adapter si nécessaire)
-        genre_feminin = "femme"#None
+        genre_feminin = None
         genre_masculin = None
 
         for modalite in modalites_genre:
@@ -908,8 +909,8 @@ def page_fidelisation():
 
     base=df[df["ÉLIGIBILITÉ AU DON."]=="Eligible"]
 
-    st.sidebar.write("## Navigation")
-    st.sidebar.write("Aller ")
+    #st.sidebar.write("## Navigation")
+    #st.sidebar.write("Aller ")
     with st.sidebar:
         Arron = base["Arrondissement de résidence"].unique()
         Arron_selectionne = st.sidebar.multiselect(
