@@ -1147,6 +1147,7 @@ def page_fidelisation():
                 box-shadow: 5px 5px 15px rgba(192, 57, 43, 0.4); /* ombre rouge */
                 border-radius: 10px;
                 padding: 10px;
+                height: 500px;
             }
 
             h4 {
