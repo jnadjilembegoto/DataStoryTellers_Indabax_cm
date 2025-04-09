@@ -140,7 +140,7 @@ if st.session_state.auth_status:
     st.sidebar.title(f"Bienvenue, {st.session_state.username} 👋")
     # Barre latérale pour la navigation
     st.sidebar.title("Navigation")
-    page = st.sidebar.selectbox("Aller à :", ["Fonctionnalités","Cartographie de la Répartition des Donneurs","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","Modèle de prédiction","Chat Blood","About Us"])
+    page = st.sidebar.selectbox("Aller à :", ["Vue globale","Cartographie de la Répartition des Donneurs","Profil des donneurs","Fidélisation des donneurs","Condition de santé et éligibilité","Efficacité des campagnes","Analyse de sentiments","Modèle de prédiction","Chat Blood","About Us"])
 
     #st.title(f"Page {page}")
     if page == "About Us":
