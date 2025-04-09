@@ -116,8 +116,8 @@ if "auth_page" in st.session_state and st.session_state.auth_page:
             # Utilisation d'un formulaire pour valider avec "Enter"
             with st.form(key="login_form"):
                 st.subheader("Connexion 🔒")
-                username = st.text_input("Nom d'utilisateur 👤")
-                password = st.text_input("Mot de passe 🔑", type="password")
+                username = st.text_input("Nom d'utilisateur 👤",help="Entrez : admin")
+                password = st.text_input("Mot de passe 🔑", type="password",help="Entrez : password123")
 
                 # Bouton de validation du formulaire (Enter fonctionne aussi)
                 submit_button = st.form_submit_button("✅ Valider")
