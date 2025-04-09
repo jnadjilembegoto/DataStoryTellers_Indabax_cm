@@ -8,7 +8,7 @@ import numpy as np
 import colorsys
 from streamlit_plotly_events import plotly_events
 import graphviz
-#import locale
+import locale
 from Datas.data_link import data_dir
 path = data_dir('base_streamlit_storytellers.xlsx')
     
