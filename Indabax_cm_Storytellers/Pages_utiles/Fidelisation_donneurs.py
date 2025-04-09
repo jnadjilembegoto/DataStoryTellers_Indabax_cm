@@ -494,7 +494,7 @@ def page_fidelisation():
             st.plotly_chart(fig, use_container_width=True)
 
     ## Créer une clonne classe d'âge
-    def creer_classe_age_amplitude_egale(df, nom_colonne_age, nom_nouvelle_colonne, n_classes=5):#='Classe_Age'
+    def creer_classe_age_amplitude_egale(df, nom_colonne_age, nom_nouvelle_colonne='Classe_Age', n_classes=5):#
         """
         Crée une nouvelle colonne 'Classe_Age' avec un nombre spécifié de classes
         ayant une amplitude égale (entière), basées sur le minimum et le maximum
