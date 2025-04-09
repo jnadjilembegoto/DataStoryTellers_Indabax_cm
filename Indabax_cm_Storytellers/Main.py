@@ -1,4 +1,11 @@
 import streamlit as st
+# Configuration de la page
+st.set_page_config(
+        page_title="Tableau de Bord - Don de Sang",
+        page_icon="🩸",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
 from PIL import Image
 from Photos.photo_link import main_dir
 from Pages_utiles.About_us  import about_us_page
@@ -10,7 +17,7 @@ from Pages_utiles.ACP import acp_analyse
 from Pages_utiles.ML import ml_analyse
 #from Pages_utiles.Profil_donneurs2 import page_profil_load
 from Pages_utiles.Profil_des_donneurs import page_profil_load
-from Pages_utiles.carto2 import carto_page_load
+from Pages_utiles.Cartographie_donneur import carto_page_load#carto2
 from Pages_utiles.ChatBlood import chat_load
 from Pages_utiles.Fonctionnalities import fonctionnalities_load
 
@@ -19,13 +26,7 @@ logo_path = main_dir("campagne_cameroun_dst.webp")
 logo = Image.open(logo_path)
 coeur_path=main_dir("sang_coeur.webp")
 coeur= Image.open(coeur_path)
-# Configuration de la page
-st.set_page_config(
-        page_title="Tableau de Bord - Don de Sang",
-        page_icon="🩸",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
+
 
 
 # Initialisation de l'état de session
